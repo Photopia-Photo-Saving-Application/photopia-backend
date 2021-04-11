@@ -15,18 +15,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
+
 
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
-
-	@Autowired
-	private AuthenticationManager authenticationManager;
-
-	@Autowired
-	private JwtUtil jwtTokenUtil;
-
 
 	private UserServiceImpl userService;
 
@@ -104,32 +97,6 @@ public class UserRestController {
 		return "Deleted user id - " + userId;
 	}
 
-	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-//		System.out.println("inside api/signIn");
-		try {
-//			System.out.println("username: "+authenticationRequest.getUsername());
-//			System.out.println("userpassword: "+authenticationRequest.getPassword());
-			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
-			);
-//			System.out.println("inside try");
-		}
-		catch (BadCredentialsException e) {
-			throw new Exception("Incorrect username or password", e);
-		}
-
-
-		final UserDetails theUser = userService.loadUserByUsername(authenticationRequest.getUsername());
-
-		final String jwt = jwtTokenUtil.generateToken(theUser);
-
-//		System.out.println("before insertToken in controller");
-
-		userService.insertToken(theUser.getUsername(),jwt);
-
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
-	}
 	
 }
 

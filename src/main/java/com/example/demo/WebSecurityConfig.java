@@ -49,7 +49,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		//		System.out.println("websecurity configure");
 		httpSecurity.csrf().disable()
-				.authorizeRequests().antMatchers("/api/*").permitAll().
+				.authorizeRequests().antMatchers("/auth/*").permitAll().
 						anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

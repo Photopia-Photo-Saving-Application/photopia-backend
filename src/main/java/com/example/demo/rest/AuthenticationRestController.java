@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationRestController {
@@ -97,18 +99,20 @@ public class AuthenticationRestController {
         return  "User logged out of all devices";
     }
 
-    @PutMapping("/passwordChange/{oldPassword}/{newPassword}")
-    public String changeUserPassword(@PathVariable(name="oldPassword") String theOldPassword, @PathVariable(name="newPassword") String theNewPassword) throws Exception{
+    @PutMapping("/passwordChange")
+    public String changeUserPassword(@RequestBody LinkedHashMap theRequest) throws Exception{
         try{
             String theUsername= jwtRequestFilter.getUsername();
 
             if(theUsername == null){
                 throw new Exception("No username exists");
             }
-            userService.changePasswordForUser(theUsername);
+            System.out.println("before user service");
+            userService.changePasswordForUser(theUsername,(String) theRequest.get("oldpassword"),(String) theRequest.get("newpassword"));
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
         return  "Password changed for the user";
     }
+
 }

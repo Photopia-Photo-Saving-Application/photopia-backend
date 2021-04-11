@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dao.UserDAO;
 import com.example.demo.entity.User;
 
 @Service
@@ -95,8 +94,8 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 	@Override
 	@Transactional
-	public void changePasswordForUser(String theUsername) {
-		userDAO.changePasswordForUser(theUsername);
+	public void changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword) {
+		userDAO.changePasswordForUser(theUsername, theOldPassword, theNewPassword);
 	}
 }
 

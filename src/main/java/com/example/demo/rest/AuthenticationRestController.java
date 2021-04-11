@@ -74,10 +74,25 @@ public class AuthenticationRestController {
 
             userService.removeToken(theToken);
         }catch(Exception e){
-            throw new Exception("Could not find the token", e);
+            throw new Exception("Could not delete the token", e);
         }
         return  "User logged out of this device";
     }
 
+    @PostMapping( "/signOutAllDevices")
+    public String removeTokenForUser() throws Exception{
+
+        try{
+            String theToken= jwtRequestFilter.getToken();
+
+            if(theToken == null){
+                throw new Exception("No token exists");
+            }
+            userService.removeTokenForUser(theToken);
+        }catch(Exception e){
+            throw new Exception("Could not find the user", e);
+        }
+        return  "User logged out of all devices";
+    }
 
 }

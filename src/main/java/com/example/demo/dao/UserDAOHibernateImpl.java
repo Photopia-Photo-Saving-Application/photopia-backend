@@ -129,7 +129,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 
 	@Override
 	public void removeToken(String theToken) {
-		System.out.println("inside dao removeToken");
+
 		Session currentSession = entityManager.unwrap(Session.class);
 
 		// delete object with primary key
@@ -139,7 +139,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 		theQuery.setParameter("Token", theToken);
 
 		theQuery.executeUpdate();
-		System.out.println("inside dao removeToken after execution");
+
 	}
 }
 

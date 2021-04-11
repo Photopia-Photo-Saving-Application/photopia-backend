@@ -80,9 +80,9 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Override
 	@Transactional
 	public void removeToken(String theToken) {
-		System.out.println("inside service removeToken");
+
 		userDAO.removeToken(theToken);
-		System.out.println("inside service after removeToken");
+
 	}
 }
 

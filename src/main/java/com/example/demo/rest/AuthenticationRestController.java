@@ -64,14 +64,14 @@ public class AuthenticationRestController {
 
     @PostMapping( "/signOut")
     public String removeToken() throws Exception{
-        System.out.println("inside removeToken");
+
         try{
             String theToken= jwtRequestFilter.getToken();
-            System.out.println("inside removeToken after getToken :");
+
             if(theToken == null){
                 throw new Exception("No token exists");
             }
-            System.out.println("inside removeToken token is not null");
+
             userService.removeToken(theToken);
         }catch(Exception e){
             throw new Exception("Could not find the token", e);

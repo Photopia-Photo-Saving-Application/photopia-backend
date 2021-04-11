@@ -54,12 +54,6 @@ public class AuthenticationRestController {
 
     @GetMapping( "/signIn/auto")
     public String getUserByToken() throws Exception{
-//        try {
-//            final User user = userService.getUserByToken(theToken);
-//        }
-//        catch (BadCredentialsException e) {
-//            throw new Exception("Incorrect token", e);
-//        }
 
         return  "User found for the token";
     }

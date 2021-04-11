@@ -100,13 +100,12 @@ public class AuthenticationRestController {
     @PutMapping("/passwordChange/{oldPassword}/{newPassword}")
     public String changeUserPassword(@PathVariable(name="oldPassword") String theOldPassword, @PathVariable(name="newPassword") String theNewPassword) throws Exception{
         try{
-            String theToken= jwtRequestFilter.getToken();
+            String theUsername= jwtRequestFilter.getUsername();
 
-            if(theToken == null){
-                throw new Exception("No token exists");
+            if(theUsername == null){
+                throw new Exception("No username exists");
             }
-
-            userService.changePasswordForUser(theToken);
+            userService.changePasswordForUser(theUsername);
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }

@@ -144,21 +144,19 @@ public class UserDAOHibernateImpl implements UserDAO {
 	@Override
 	public void removeTokenForUser(String theUsername) {
 
-		User user=getUserByName(theUsername);
-
 		Session currentSession = entityManager.unwrap(Session.class);
 
 		Query theQuery =
 				currentSession.createNativeQuery(
 						"delete from usertoken where username=:Username");
-		theQuery.setParameter("Username", user.getName());
+		theQuery.setParameter("Username",theUsername);
 
 		theQuery.executeUpdate();
 
 	}
 
 	@Override
-	public void changePasswordForUser(String theToken) {
+	public void changePasswordForUser(String theUsername) {
 
 	}
 }

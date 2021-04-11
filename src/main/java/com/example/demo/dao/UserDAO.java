@@ -24,5 +24,5 @@ public interface UserDAO {
 
 	void removeTokenForUser(String theUsername);
 
-	void changePasswordForUser(String theToken);
+	void changePasswordForUser(String theUsername);
 }

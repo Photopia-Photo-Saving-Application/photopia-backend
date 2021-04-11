@@ -15,4 +15,6 @@ public interface UserService {
 	void deleteById(int theId);
 
 	void insertToken(String theUsername, String theToken);
+
+	User getUserByToken(String theToken);
 }

@@ -115,6 +115,17 @@ public class UserDAOHibernateImpl implements UserDAO {
 //		System.out.println("before insertToken dao query execution");
 		theQuery.executeUpdate();
 	}
+
+	@Override
+	public User getUserByToken(String theToken) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		Query theQuery =
+				currentSession.createNativeQuery(
+						"from usertoken where token=:Token");
+		theQuery.setParameter("Token", theToken);
+		User theUser= (User) theQuery.uniqueResult();
+		return theUser;
+	}
 }
 
 

@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 		userDAO.insertToken(theUsername,theToken);
 	}
+
+	@Override
+	public User getUserByToken(String theToken) {
+		return userDAO.getUserByToken(theToken);
+	}
 }
 
 

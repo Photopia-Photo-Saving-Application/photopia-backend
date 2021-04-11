@@ -17,4 +17,6 @@ public interface UserDAO {
 	User getUserByName(String theName);
 
 	void insertToken(String theUsername, String theToken);
+
+	User getUserByToken(String theToken);
 }

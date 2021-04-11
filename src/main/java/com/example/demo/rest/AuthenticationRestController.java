@@ -1,5 +1,6 @@
 package com.example.demo.rest;
 
+import com.example.demo.entity.User;
 import com.example.demo.models.AuthenticationRequest;
 import com.example.demo.models.AuthenticationResponse;
 import com.example.demo.service.UserServiceImpl;
@@ -50,25 +51,16 @@ public class AuthenticationRestController {
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
-//    @RequestMapping(value = "/signIn/auto", method = RequestMethod.POST)
-//    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-//        try {
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
-//            );
-//        }
-//        catch (BadCredentialsException e) {
-//            throw new Exception("Incorrect username or password", e);
-//        }
-//
-//
-//        final UserDetails theUser = userService.loadUserByUsername(authenticationRequest.getUsername());
-//
-//        final String jwt = jwtTokenUtil.generateToken(theUser);
-//
-//
-//        userService.insertToken(theUser.getUsername(),jwt);
-//
-//        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-//    }
+
+    @PostMapping( "/signIn/auto/{token}")
+    public String getUserByToken(@PathVariable String theToken) throws Exception{
+        try {
+            final User user = userService.getUserByToken(theToken);
+        }
+        catch (BadCredentialsException e) {
+            throw new Exception("Incorrect token", e);
+        }
+
+        return  "User found for the token";
+    }
 }

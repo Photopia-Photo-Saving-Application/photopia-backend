@@ -145,9 +145,9 @@ public class UserDAOHibernateImpl implements UserDAO {
 
 	@Override
 	public void removeTokenForUser(String theToken) {
-		System.out.println("inside removeTokenForUser dao");
+
 		User user=getUserByToken(theToken);
-		System.out.println("inside removeTokenForUser dao user: "+user.toString());
+
 		Session currentSession = entityManager.unwrap(Session.class);
 
 		// delete object with primary key
@@ -157,7 +157,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 		theQuery.setParameter("Username", user.getName());
 
 		theQuery.executeUpdate();
-		System.out.println("inside removeTokenForUser dao after");
+
 	}
 }
 

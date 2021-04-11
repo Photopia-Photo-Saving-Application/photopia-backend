@@ -88,7 +88,7 @@ public class AuthenticationRestController {
             if(theToken == null){
                 throw new Exception("No token exists");
             }
-            System.out.println("inside removeTokenForUser controller token is not null");
+
             userService.removeTokenForUser(theToken);
         }catch(Exception e){
             throw new Exception("Could not find the user", e);

@@ -36,7 +36,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 		
 		// create a query
 		Query<User> theQuery =
-				currentSession.createQuery("from User", User.class);
+				currentSession.createNativeQuery("from User", User.class);
 		
 		// execute query and get result list
 		List<User> users = theQuery.getResultList();
@@ -89,24 +89,32 @@ public class UserDAOHibernateImpl implements UserDAO {
 
 	@Override
 	public User getUserByName(String theName) {
-		// get the current hibernate session
-		System.out.println("inside dao getUserbyname");
-		System.out.println(entityManager);
+		// get the current hibernate session;
+//		System.out.println(entityManager);
 		Session currentSession = entityManager.unwrap(Session.class);
 
-		// delete object with primary key
 		Query theQuery =
 				currentSession.createQuery(
 						"from User where name=:userName");
 		theQuery.setParameter("userName", theName);
-		System.out.println("inside dao getUserbyname after unwrap");
-//		User theUser = currentSession.get(User.class, theName);
 		User theUser= (User) theQuery.uniqueResult();
-		System.out.println("print user");
-		System.out.println(theUser);
+//		System.out.println("print user");
+//		System.out.println(theUser);
 		return theUser;
 	}
 
+	@Override
+	public void insertToken(String theUsername, String theToken) {
+//		System.out.println("before insertToken dao");
+		Session currentSession = entityManager.unwrap(Session.class);
+		Query theQuery =
+				currentSession.createNativeQuery(
+						"insert into usertoken (username,token) values (:Username,:Token)");
+		theQuery.setParameter("Username", theUsername);
+		theQuery.setParameter("Token",theToken);
+//		System.out.println("before insertToken dao query execution");
+		theQuery.executeUpdate();
+	}
 }
 
 

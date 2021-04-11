@@ -16,7 +16,6 @@ import com.example.demo.entity.User;
 
 @Service
 public class UserServiceImpl implements UserService,UserDetailsService{
-//public class UserServiceImpl implements UserService{
 
 	private UserDAOHibernateImpl userDAO;
 
@@ -50,24 +49,27 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		userDAO.deleteById(theId);
 	}
 
-	@Override
-	@Transactional
-	public User getUserByName(String theName) {
-		return userDAO.getUserByName(theName);
-	}
-
 
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String theName) throws UsernameNotFoundException {
-		System.out.println("inside loadUser");
+//		System.out.println("inside loadUser");
 		User user = userDAO.getUserByName(theName); //userDAO == null Causing NPE
-		System.out.println("inside loadUser user not null");
+//		System.out.println("inside loadUser user not null");
 		if (user == null)
 			throw new UsernameNotFoundException("Oops!");
 
 		return new org.springframework.security.core.userdetails
 				.User(user.getName(), user.getPassword(), new ArrayList<>());
+	}
+
+	@Override
+	@Transactional
+	public void insertToken(String theUsername, String theToken) {
+
+//		System.out.println("before insertToken service");
+
+		userDAO.insertToken(theUsername,theToken);
 	}
 }
 

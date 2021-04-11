@@ -1,6 +1,7 @@
 package com.example.demo.rest;
 
 import com.example.demo.entity.User;
+import com.example.demo.filters.JwtRequestFilter;
 import com.example.demo.models.AuthenticationRequest;
 import com.example.demo.models.AuthenticationResponse;
 import com.example.demo.service.UserServiceImpl;
@@ -22,6 +23,9 @@ public class AuthenticationRestController {
 
     @Autowired
     private JwtUtil jwtTokenUtil;
+
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
     private UserServiceImpl userService;
 
@@ -52,9 +56,28 @@ public class AuthenticationRestController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-    @GetMapping( "/signIn/auto")
+    @PostMapping( "/signIn/auto")
     public String getUserByToken() throws Exception{
 
         return  "User found for the token";
     }
+
+    @PostMapping( "/signOut")
+    public String removeToken() throws Exception{
+        System.out.println("inside removeToken");
+        try{
+            String theToken= jwtRequestFilter.getToken();
+            System.out.println("inside removeToken after getToken :");
+            if(theToken == null){
+                throw new Exception("No token exists");
+            }
+            System.out.println("inside removeToken token is not null");
+            userService.removeToken(theToken);
+        }catch(Exception e){
+            throw new Exception("Could not find the token", e);
+        }
+        return  "User logged out of this device";
+    }
+
+
 }

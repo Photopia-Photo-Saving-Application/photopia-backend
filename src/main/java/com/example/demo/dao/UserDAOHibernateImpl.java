@@ -126,6 +126,21 @@ public class UserDAOHibernateImpl implements UserDAO {
 		User theUser= (User) theQuery.uniqueResult();
 		return theUser;
 	}
+
+	@Override
+	public void removeToken(String theToken) {
+		System.out.println("inside dao removeToken");
+		Session currentSession = entityManager.unwrap(Session.class);
+
+		// delete object with primary key
+		Query theQuery =
+				currentSession.createNativeQuery(
+						"delete from usertoken where token=:Token");
+		theQuery.setParameter("Token", theToken);
+
+		theQuery.executeUpdate();
+		System.out.println("inside dao removeToken after execution");
+	}
 }
 
 

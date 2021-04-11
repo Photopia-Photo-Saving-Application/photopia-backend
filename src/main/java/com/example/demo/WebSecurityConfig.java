@@ -47,7 +47,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-	System.out.println("websecurity configure");
 		httpSecurity.csrf().disable()
 				.authorizeRequests().antMatchers("/auth/signIn").permitAll().
 						anyRequest().authenticated().and().

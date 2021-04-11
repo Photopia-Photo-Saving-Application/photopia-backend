@@ -19,4 +19,6 @@ public interface UserDAO {
 	void insertToken(String theUsername, String theToken);
 
 	User getUserByToken(String theToken);
+
+	void removeToken(String theToken);
 }

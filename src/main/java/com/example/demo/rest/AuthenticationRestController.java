@@ -7,6 +7,7 @@ import com.example.demo.models.AuthenticationResponse;
 import com.example.demo.service.UserServiceImpl;
 import com.example.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -83,17 +84,32 @@ public class AuthenticationRestController {
     public String removeTokenForUser() throws Exception{
 
         try{
-            String theToken= jwtRequestFilter.getToken();
+            String theUsername= jwtRequestFilter.getUsername();
 
-            if(theToken == null){
-                throw new Exception("No token exists");
+            if(theUsername == null){
+                throw new Exception("No username exists");
             }
 
-            userService.removeTokenForUser(theToken);
+            userService.removeTokenForUser(theUsername);
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
         return  "User logged out of all devices";
     }
 
+    @PutMapping("/passwordChange/{oldPassword}/{newPassword}")
+    public String changeUserPassword(@PathVariable(name="oldPassword") String theOldPassword, @PathVariable(name="newPassword") String theNewPassword) throws Exception{
+        try{
+            String theToken= jwtRequestFilter.getToken();
+
+            if(theToken == null){
+                throw new Exception("No token exists");
+            }
+
+            userService.changePasswordForUser(theToken);
+        }catch(Exception e){
+            throw new Exception("Could not find the user", e);
+        }
+        return  "Password changed for the user";
+    }
 }

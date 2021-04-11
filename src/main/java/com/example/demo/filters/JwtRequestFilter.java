@@ -64,4 +64,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     public String getToken(){
         return jwt;
     }
+    public String getUsername() { return username;}
 }

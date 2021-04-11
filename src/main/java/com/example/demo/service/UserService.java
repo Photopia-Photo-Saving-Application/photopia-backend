@@ -21,4 +21,6 @@ public interface UserService {
 	void removeToken(String theToken);
 
 	void removeTokenForUser(String theToken);
+
+	void changePasswordForUser(String theUsername);
 }

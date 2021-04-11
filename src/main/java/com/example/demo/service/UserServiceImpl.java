@@ -87,10 +87,16 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 	@Override
 	@Transactional
-	public void removeTokenForUser(String theToken) {
+	public void removeTokenForUser(String theUsername) {
 
-		userDAO.removeTokenForUser(theToken);
+		userDAO.removeTokenForUser(theUsername);
 
+	}
+
+	@Override
+	@Transactional
+	public void changePasswordForUser(String theToken) {
+		userDAO.changePasswordForUser(theToken);
 	}
 }
 

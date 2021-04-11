@@ -36,7 +36,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 		
 		// create a query
 		Query<User> theQuery =
-				currentSession.createNativeQuery("from User", User.class);
+				currentSession.createQuery("from User");
 		
 		// execute query and get result list
 		List<User> users = theQuery.getResultList();
@@ -89,8 +89,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 
 	@Override
 	public User getUserByName(String theName) {
-		// get the current hibernate session;
-//		System.out.println(entityManager);
+
 		Session currentSession = entityManager.unwrap(Session.class);
 
 		Query theQuery =
@@ -98,21 +97,20 @@ public class UserDAOHibernateImpl implements UserDAO {
 						"from User where name=:userName");
 		theQuery.setParameter("userName", theName);
 		User theUser= (User) theQuery.uniqueResult();
-//		System.out.println("print user");
-//		System.out.println(theUser);
+
 		return theUser;
 	}
 
 	@Override
 	public void insertToken(String theUsername, String theToken) {
-//		System.out.println("before insertToken dao");
+
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query theQuery =
 				currentSession.createNativeQuery(
 						"insert into usertoken (username,token) values (:Username,:Token)");
 		theQuery.setParameter("Username", theUsername);
 		theQuery.setParameter("Token",theToken);
-//		System.out.println("before insertToken dao query execution");
+
 		theQuery.executeUpdate();
 	}
 
@@ -144,19 +142,23 @@ public class UserDAOHibernateImpl implements UserDAO {
 	}
 
 	@Override
-	public void removeTokenForUser(String theToken) {
+	public void removeTokenForUser(String theUsername) {
 
-		User user=getUserByToken(theToken);
+		User user=getUserByName(theUsername);
 
 		Session currentSession = entityManager.unwrap(Session.class);
 
-		// delete object with primary key
 		Query theQuery =
 				currentSession.createNativeQuery(
 						"delete from usertoken where username=:Username");
 		theQuery.setParameter("Username", user.getName());
 
 		theQuery.executeUpdate();
+
+	}
+
+	@Override
+	public void changePasswordForUser(String theToken) {
 
 	}
 }

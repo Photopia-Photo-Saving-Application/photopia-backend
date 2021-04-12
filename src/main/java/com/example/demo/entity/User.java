@@ -24,6 +24,11 @@ public class User{
 	@Column(name="password")
 	private String password;
 
+	@Column(name="enabled")
+	private boolean enabled;
+
+	@Column(name="verification_code")
+	private String verificationCode;
 //	@ManyToOne(cascade = CascadeType.ALL)
 //	@JoinColumn(name="superviser")
 //	private User superviser;
@@ -38,6 +43,7 @@ public class User{
 		this.email = email;
 		this.address = address;
 		this.password = password;
+		this.enabled=false;
 	}
 
 	// define getter/setter
@@ -80,6 +86,22 @@ public class User{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
 	}
 
 	@Override

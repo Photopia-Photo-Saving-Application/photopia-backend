@@ -102,7 +102,7 @@ public class AuthenticationRestController {
         return  "User logged out of all devices";
     }
 
-    @PutMapping("/passwordChange")
+    @PatchMapping("/passwordChange")
     public String changeUserPassword(@RequestBody LinkedHashMap theRequest) throws Exception{
         try{
             String theUsername= jwtRequestFilter.getUsername();
@@ -121,5 +121,16 @@ public class AuthenticationRestController {
         }
 
     }
+    @PostMapping("/signUp")
+    public String registerUser(User user, HttpServletRequest request)
+            throws UnsupportedEncodingException, MessagingException {
+        System.out.println(getSiteURL(request));
+        //userService.registerUser(user, getSiteURL(request));
+        return "register_success";
+    }
 
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
+    }
 }

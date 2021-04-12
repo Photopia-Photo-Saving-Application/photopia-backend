@@ -25,4 +25,6 @@ public interface UserDAO {
 	void removeTokenForUser(String theUsername);
 
 	Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword);
+
+    void registerUser(User theUser, String siteURL);
 }

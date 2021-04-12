@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.metamodel.Metamodel;
 
+import net.bytebuddy.utility.RandomString;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,6 +173,15 @@ public class UserDAOHibernateImpl implements UserDAO {
 		theUser.setPassword(theNewPassword);
 		currentSession.update(theUser);
 		return true;
+	}
+
+	@Override
+	public void registerUser(User theUser, String siteURL) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		String randomCode = RandomString.make(64);
+		theUser.setVerificationCode(randomCode);
+		System.out.println(theUser.toString());
+		currentSession.save(theUser);
 	}
 }
 

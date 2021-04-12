@@ -122,10 +122,10 @@ public class AuthenticationRestController {
 
     }
     @PostMapping("/signUp")
-    public String registerUser(User user, HttpServletRequest request)
+    public String registerUser(@RequestBody User theUser, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
-        System.out.println(getSiteURL(request));
-        //userService.registerUser(user, getSiteURL(request));
+        System.out.println(theUser.toString());
+        userService.registerUser(theUser, getSiteURL(request));
         return "register_success";
     }
 

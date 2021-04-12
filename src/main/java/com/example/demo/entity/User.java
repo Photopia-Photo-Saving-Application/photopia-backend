@@ -27,7 +27,7 @@ public class User{
 	@Column(name="enabled")
 	private boolean enabled;
 
-	@Column(name="verification_code")
+	@Column(name="verification_code",updatable = false)
 	private String verificationCode;
 //	@ManyToOne(cascade = CascadeType.ALL)
 //	@JoinColumn(name="superviser")
@@ -60,7 +60,7 @@ public class User{
 		return name;
 	}
 
-	public void setName(String firstName) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -110,8 +110,8 @@ public class User{
 				"id=" + id +
 				", name='" + name + '\'' +
 				", email='" + email + '\'' +
-				", address='" + address +
-				", password='" + password +
+				", address='" + address + '\'' +
+				", password='" + password + '\'' +
 				'}';
 	}
 }

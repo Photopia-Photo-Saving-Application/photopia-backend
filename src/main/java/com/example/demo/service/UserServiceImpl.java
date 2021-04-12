@@ -97,6 +97,12 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	public Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword) {
 		return userDAO.changePasswordForUser(theUsername, theOldPassword, theNewPassword);
 	}
+
+	@Override
+	public void registerUser(User theUser, String siteURL) {
+		System.out.println("service: "+theUser.toString());
+		userDAO.registerUser(theUser,siteURL);
+	}
 }
 
 

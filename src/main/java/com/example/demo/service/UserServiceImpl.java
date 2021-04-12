@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.dao.UserDAOHibernateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,11 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.User;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 @Service
 public class UserServiceImpl implements UserService,UserDetailsService{
 
-	private UserDAOHibernateImpl userDAO;
+	@Autowired
+	private JavaMailSender mailSender;
 
+	private UserDAOHibernateImpl userDAO;
 
 	@Autowired
 	public UserServiceImpl(UserDAOHibernateImpl theUserDAO) {
@@ -99,9 +107,40 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	}
 
 	@Override
-	public void registerUser(User theUser, String siteURL) {
+	public void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException {
 		System.out.println("service: "+theUser.toString());
 		userDAO.registerUser(theUser,siteURL);
+		sendVerificationEmail(theUser, siteURL);
+	}
+
+	private void sendVerificationEmail(User theUser, String siteURL)
+			throws MessagingException, UnsupportedEncodingException {
+		String toAddress = theUser.getEmail();
+		String fromAddress = "Your email address";
+		String senderName = "Your company name";
+		String subject = "Please verify your registration";
+		String content = "Dear [[name]],<br>"
+				+ "Please click the link below to verify your registration:<br>"
+				+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+				+ "Thank you,<br>"
+				+ "Your company name.";
+
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+
+		helper.setFrom(fromAddress, senderName);
+		helper.setTo(toAddress);
+		helper.setSubject(subject);
+
+		content = content.replace("[[name]]", theUser.getName());
+		String verifyURL = siteURL + "/verify?code=" + theUser.getVerificationCode();
+
+		content = content.replace("[[URL]]", verifyURL);
+
+		helper.setText(content, true);
+
+		mailSender.send(message);
+
 	}
 }
 

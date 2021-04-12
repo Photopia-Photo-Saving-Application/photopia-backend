@@ -156,16 +156,18 @@ public class UserDAOHibernateImpl implements UserDAO {
 	}
 
 	@Override
-	public void changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword){
+	public Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword){
 		System.out.println("inside changepasowrdforuser dao");
 		Session currentSession = entityManager.unwrap(Session.class);
 		String oldPassword = (String) currentSession.createQuery("select password from User  where name = :Username").setString("Username",theUsername).uniqueResult();
 		System.out.println("oldpassword: "+oldPassword);
-		if(oldPassword!=theOldPassword){
-//			 new Exception("Old password didnot match");
+		if(!oldPassword.equals(theOldPassword)){
+				System.out.println("old passwords didnot match");
+			  return false;
 		}
-		Query theQuery=currentSession.createNativeQuery("update user set password where name = :Username");
-		theQuery.setParameter("Username",theUsername).executeUpdate();
+		Query theQuery=currentSession.createNativeQuery("update user  set password=:Newpassword where name = :Username");
+		theQuery.setParameter("Username",theUsername).setParameter("Newpassword",theNewPassword).executeUpdate();
+		return true;
 	}
 }
 

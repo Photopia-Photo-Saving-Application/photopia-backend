@@ -22,5 +22,5 @@ public interface UserService {
 
 	void removeTokenForUser(String theToken);
 
-	void changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword);
+	Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword);
 }

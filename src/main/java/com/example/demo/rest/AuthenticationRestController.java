@@ -108,11 +108,15 @@ public class AuthenticationRestController {
                 throw new Exception("No username exists");
             }
             System.out.println("before user service");
-            userService.changePasswordForUser(theUsername,(String) theRequest.get("oldpassword"),(String) theRequest.get("newpassword"));
+            boolean result=userService.changePasswordForUser(theUsername,(String) theRequest.get("oldpassword"),(String) theRequest.get("newpassword"));
+            if(!result){
+                return "You have entered wrong password";
+            }
+            return  "Password changed for the user";
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
-        return  "Password changed for the user";
+
     }
 
 }

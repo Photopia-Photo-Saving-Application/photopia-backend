@@ -94,8 +94,8 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 	@Override
 	@Transactional
-	public void changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword) {
-		userDAO.changePasswordForUser(theUsername, theOldPassword, theNewPassword);
+	public Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword) {
+		return userDAO.changePasswordForUser(theUsername, theOldPassword, theNewPassword);
 	}
 }
 

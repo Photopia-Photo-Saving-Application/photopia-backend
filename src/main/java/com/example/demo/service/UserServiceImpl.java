@@ -60,9 +60,9 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String theName) throws UsernameNotFoundException {
-//		System.out.println("inside loadUser");
+
 		User user = userDAO.getUserByName(theName); //userDAO == null Causing NPE
-//		System.out.println("inside loadUser user not null");
+
 		if (user == null)
 			throw new UsernameNotFoundException("No user with the username!");
 		if(!user.isEnabled()) throw new UsernameNotFoundException("User is not verified");
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Transactional
 	public void insertToken(String theUsername, String theToken) {
 
-//		System.out.println("before insertToken service");
+
 
 		userDAO.insertToken(theUsername,theToken);
 	}
@@ -107,17 +107,16 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Override
 	@Transactional
 	public void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException {
-		System.out.println("service: "+theUser.toString());
+
 		userDAO.registerUser(theUser,siteURL);
-		System.out.println("before email send");
+
 		sendVerificationEmail(theUser, siteURL);
 	}
 
 	@Override
 	@Transactional
 	public boolean verifyUser(String theVerificationCode) {
-		System.out.println("before dao");
-		System.out.println(theVerificationCode);
+
 		return userDAO.verifyUser(theVerificationCode);
 	}
 
@@ -131,7 +130,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 				+ "Please click the link below to verify your registration:<br>"
 				+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
 				+ "Thank you,<br>"
-				+ "Your company name.";
+				+ "DemoSpring";
 
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -146,9 +145,9 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		content = content.replace("[[URL]]", verifyURL);
 
 		helper.setText(content, true);
-		System.out.println("before mailsender");
+
 		mailSender.send(message);
-		System.out.println("after mail send");
+
 	}
 }
 

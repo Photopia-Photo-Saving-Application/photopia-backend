@@ -129,6 +129,15 @@ public class AuthenticationRestController {
         return "register_success";
     }
 
+    @GetMapping("/signUp/verify")
+    public String verifyUser(@Param("code") String theVerificationCode) {
+        if (userService.verifyUser(theVerificationCode)) {
+            return "verify_success";
+        } else {
+            return "verify_fail";
+        }
+    }
+
     private String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");

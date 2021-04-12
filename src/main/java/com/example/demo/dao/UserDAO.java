@@ -27,4 +27,6 @@ public interface UserDAO {
 	Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword);
 
     void registerUser(User theUser, String siteURL);
+
+	boolean verifyUser(String theVerificationCode);
 }

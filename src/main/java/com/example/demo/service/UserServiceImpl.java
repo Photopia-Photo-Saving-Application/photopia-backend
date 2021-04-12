@@ -95,9 +95,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Override
 	@Transactional
 	public void removeTokenForUser(String theUsername) {
-
 		userDAO.removeTokenForUser(theUsername);
-
 	}
 
 	@Override
@@ -107,10 +105,17 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	}
 
 	@Override
+	@Transactional
 	public void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException {
 		System.out.println("service: "+theUser.toString());
 		userDAO.registerUser(theUser,siteURL);
 		sendVerificationEmail(theUser, siteURL);
+	}
+
+	@Override
+	@Transactional
+	public boolean verifyUser(String theVerificationCode) {
+		return userDAO.verifyUser(theVerificationCode);
 	}
 
 	private void sendVerificationEmail(User theUser, String siteURL)

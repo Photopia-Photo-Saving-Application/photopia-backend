@@ -109,20 +109,23 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	public void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException {
 		System.out.println("service: "+theUser.toString());
 		userDAO.registerUser(theUser,siteURL);
+		System.out.println("before email send");
 		sendVerificationEmail(theUser, siteURL);
 	}
 
 	@Override
 	@Transactional
 	public boolean verifyUser(String theVerificationCode) {
+		System.out.println("before dao");
+		System.out.println(theVerificationCode);
 		return userDAO.verifyUser(theVerificationCode);
 	}
 
 	private void sendVerificationEmail(User theUser, String siteURL)
 			throws MessagingException, UnsupportedEncodingException {
 		String toAddress = theUser.getEmail();
-		String fromAddress = "Your email address";
-		String senderName = "Your company name";
+		String fromAddress="demoSpring@gmail.com";
+		String senderName = "DemoSpringAuth";
 		String subject = "Please verify your registration";
 		String content = "Dear [[name]],<br>"
 				+ "Please click the link below to verify your registration:<br>"
@@ -138,14 +141,14 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		helper.setSubject(subject);
 
 		content = content.replace("[[name]]", theUser.getName());
-		String verifyURL = siteURL + "/verify?code=" + theUser.getVerificationCode();
+		String verifyURL = siteURL + "/auth/signUp/verify?code=" + theUser.getVerificationCode();
 
 		content = content.replace("[[URL]]", verifyURL);
 
 		helper.setText(content, true);
-
+		System.out.println("before mailsender");
 		mailSender.send(message);
-
+		System.out.println("after mail send");
 	}
 }
 

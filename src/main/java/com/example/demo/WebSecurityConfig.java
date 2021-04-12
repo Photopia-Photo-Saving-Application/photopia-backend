@@ -50,7 +50,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable()
 				.authorizeRequests().antMatchers("/auth/signIn").permitAll().
 						antMatchers("/auth/signUp").permitAll().
-						antMatchers("/auth/signUp/verify").permitAll().
+						antMatchers("/auth/signUp/verify*").permitAll().
 						anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

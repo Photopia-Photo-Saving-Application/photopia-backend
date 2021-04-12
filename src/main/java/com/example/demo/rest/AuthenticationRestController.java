@@ -130,11 +130,12 @@ public class AuthenticationRestController {
     }
 
     @GetMapping("/signUp/verify")
-    public String verifyUser(@Param("code") String theVerificationCode) {
+    public String verifyUser(@RequestParam("code") String theVerificationCode) {
+        System.out.println(theVerificationCode);
         if (userService.verifyUser(theVerificationCode)) {
-            return "verify_success";
+            return "User verification successful";
         } else {
-            return "verify_fail";
+            return "User verification failed";
         }
     }
 

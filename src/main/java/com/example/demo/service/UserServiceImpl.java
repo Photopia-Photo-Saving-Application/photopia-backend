@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		User user = userDAO.getUserByName(theName); //userDAO == null Causing NPE
 //		System.out.println("inside loadUser user not null");
 		if (user == null)
-			throw new UsernameNotFoundException("Oops!");
-
+			throw new UsernameNotFoundException("No user with the username!");
+		if(!user.isEnabled()) throw new UsernameNotFoundException("User is not verified");
 		return new org.springframework.security.core.userdetails
 				.User(user.getName(), user.getPassword(), new ArrayList<>());
 	}

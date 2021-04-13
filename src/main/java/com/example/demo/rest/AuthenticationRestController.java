@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -32,6 +33,9 @@ public class AuthenticationRestController {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private UserServiceImpl userService;
 
@@ -125,6 +129,7 @@ public class AuthenticationRestController {
     public String registerUser(@RequestBody User theUser, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
         //System.out.println("registerUser: "+theUser.toString());
+        theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
         userService.registerUser(theUser, getSiteURL(request));
         return "register_success";
     }

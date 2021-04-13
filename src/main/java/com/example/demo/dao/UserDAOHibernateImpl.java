@@ -190,7 +190,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 		} else {
 			user.setVerificationCode(null);
 			user.setEnabled(true);
-			currentSession.save(user);
+			currentSession.update(user);
 			return true;
 		}
 	}

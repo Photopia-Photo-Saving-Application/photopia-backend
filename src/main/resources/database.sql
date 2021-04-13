@@ -5,10 +5,20 @@ CREATE TABLE `demospring`.`user` (
   `email` VARCHAR(100) NOT NULL,
   `address` VARCHAR(500) NOT NULL,
   `password` VARCHAR(250) NOT NULL,
+  `enabled` BIT(1) NOT NULL,
+  `verification_code` VARCHAR(1000) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
+
+
+CREATE TABLE `demospring`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `username` VARCHAR(50) NOT NULL,
+  `token` VARCHAR(1000) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 
 Insert into `demoSpring`.user(name,email,address,password) values ("Monica","monicagellar@gmail.com","New York","abc123");

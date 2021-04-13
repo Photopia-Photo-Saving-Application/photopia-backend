@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	private JavaMailSender mailSender;
 
 	private UserDAOHibernateImpl userDAO;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public UserServiceImpl(UserDAOHibernateImpl theUserDAO) {
@@ -101,7 +105,12 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Override
 	@Transactional
 	public Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword) {
-		return userDAO.changePasswordForUser(theUsername, theOldPassword, theNewPassword);
+		User theUser=userDAO.getUserByName(theUsername);
+		System.out.println(theUser.getPassword());
+		if(!passwordEncoder.matches(theOldPassword,theUser.getPassword())){
+			return false;
+		}
+		return userDAO.changePasswordForUser(theUser,passwordEncoder.encode( theNewPassword));
 	}
 
 	@Override

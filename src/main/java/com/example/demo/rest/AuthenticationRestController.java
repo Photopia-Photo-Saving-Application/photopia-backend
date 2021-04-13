@@ -114,7 +114,6 @@ public class AuthenticationRestController {
             if(theUsername == null){
                 throw new Exception("No username exists");
             }
-
             boolean result=userService.changePasswordForUser(theUsername,(String) theRequest.get("oldpassword"),(String) theRequest.get("newpassword"));
             if(!result){
                 return "You have entered wrong password";

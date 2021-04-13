@@ -14,6 +14,7 @@ import net.bytebuddy.utility.RandomString;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.User;
@@ -23,6 +24,9 @@ public class UserDAOHibernateImpl implements UserDAO {
 
 	// define field for entitymanager
 	private EntityManager entityManager ;
+
+
+
 	// set up constructor injection
 	@Autowired
 	public UserDAOHibernateImpl(EntityManager theEntityManager) {
@@ -157,12 +161,9 @@ public class UserDAOHibernateImpl implements UserDAO {
 	}
 
 	@Override
-	public Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword){
+	public Boolean changePasswordForUser(User theUser,String theNewPassword){
+
 		Session currentSession = entityManager.unwrap(Session.class);
-		User theUser=getUserByName(theUsername);
-		if(!theUser.getPassword().equals(theOldPassword)){
-			return false;
-		}
 		theUser.setPassword(theNewPassword);
 		currentSession.update(theUser);
 		return true;

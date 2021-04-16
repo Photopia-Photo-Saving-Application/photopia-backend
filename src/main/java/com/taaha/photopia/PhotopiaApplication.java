@@ -8,7 +8,7 @@ public class PhotopiaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PhotopiaApplication.class, args);
-		System.out.println("\n\nSpring Demo Application started ...");
+		System.out.println("\n\nSpring Photopia Application started ...\n\n");
 	}
 
 }

@@ -31,5 +31,9 @@ public interface UserService {
 
 	boolean verifyUser(String theVerificationCode);
 
-    //boolean newPasswordForUser(String theEmail, String siteURL) throws UnsupportedEncodingException, MessagingException;
+    boolean newPasswordForUser(String theEmail, String siteURL) throws UnsupportedEncodingException, MessagingException;
+
+	User verifyAccountRecovery(String theVerificationCode);
+
+	Boolean changePasswordForAccountVerification(User theUser, String theNewPassword);
 }

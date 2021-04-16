@@ -31,4 +31,6 @@ public interface UserDAO {
 	boolean verifyUser(String theVerificationCode);
 
 	User getUserByEmail(String theEmail);
+
+	User verifyAccountRecovery(String theVerificationCode);
 }

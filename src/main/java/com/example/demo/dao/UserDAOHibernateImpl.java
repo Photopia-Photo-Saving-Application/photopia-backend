@@ -184,14 +184,14 @@ public class UserDAOHibernateImpl implements UserDAO {
 
 		Query theQuery=currentSession.createQuery("from User where verificationCode=:VerificationCode");
 		theQuery.setParameter("VerificationCode",theVerificationCode);
-		User user = (User) theQuery.uniqueResult();
+		User theUser = (User) theQuery.uniqueResult();
 
-		if (user == null || user.isEnabled()) {
+		if (theUser == null || theUser.isEnabled()) {
 			return false;
 		} else {
-			user.setVerificationCode(null);
-			user.setEnabled(true);
-			currentSession.update(user);
+			theUser.setVerificationCode(null);
+			theUser.setEnabled(true);
+			currentSession.update(theUser);
 			return true;
 		}
 	}
@@ -207,6 +207,23 @@ public class UserDAOHibernateImpl implements UserDAO {
 		User theUser= (User) theQuery.uniqueResult();
 
 		return theUser;
+	}
+
+	@Override
+	public User verifyAccountRecovery(String theVerificationCode) {
+		Session currentSession = entityManager.unwrap(Session.class);
+
+		Query theQuery=currentSession.createQuery("from User where verificationCode=:VerificationCode");
+		theQuery.setParameter("VerificationCode",theVerificationCode);
+		User theUser = (User) theQuery.uniqueResult();
+
+		if (theUser == null ) {
+			return null;
+		} else {
+			theUser.setVerificationCode(null);
+			currentSession.update(theUser);
+			return theUser;
+		}
 	}
 }
 

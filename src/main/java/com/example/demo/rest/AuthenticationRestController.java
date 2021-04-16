@@ -145,7 +145,6 @@ public class AuthenticationRestController {
     @PatchMapping("/forgotPassword")
     public String forgotUserPassword(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
         try{
-
             boolean result=userService.newPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
             if(!result){
                 return "No user is registered with this email";
@@ -155,15 +154,15 @@ public class AuthenticationRestController {
             throw new Exception("Could not find the user", e);
         }
     }
-    @PatchMapping("/recoverAccount?")
-    public String recoverAccount(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
+    @PatchMapping("/recoverAccount")
+    public String recoverAccount(@RequestBody LinkedHashMap theRequest,@RequestParam("code") String theVerificationCode, HttpServletRequest request) throws Exception{
         try{
-
-//            boolean result=userService.newPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
-//            if(!result){
-//                return "No user is registered with this email";
-//            }
-            return  "Check your email to change password";
+            User theUser= userService.verifyAccountRecovery(theVerificationCode);
+            if(theUser==null){
+                return "User verification code didnot match";
+            }
+            userService.changePasswordForAccountVerification(theUser, (String) theRequest.get("password"));
+            return "Password changed for account recovery";
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }

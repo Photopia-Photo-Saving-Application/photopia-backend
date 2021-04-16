@@ -84,6 +84,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	}
 
 	@Override
+	@Transactional
 	public User getUserByToken(String theToken) {
 		return userDAO.getUserByToken(theToken);
 	}
@@ -129,13 +130,37 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		return userDAO.verifyUser(theVerificationCode);
 	}
 
+	@Override
+	@Transactional
+	public boolean newPasswordForUser(String theEmail, String siteURL) throws UnsupportedEncodingException, MessagingException {
+		User theUser = userDAO.getUserByEmail(theEmail);
+		if(theUser==null){
+			return false;
+		}
+		userDAO.registerUser(theUser);
+		sendVerificationEmail(theUser, siteURL+"/auth/recoverAccount?code="+theUser.getVerificationCode(), "Please recover your account");
+		return true;
+	}
+
+	@Override
+	@Transactional
+	public User verifyAccountRecovery(String theVerificationCode) {
+		return userDAO.verifyAccountRecovery(theVerificationCode);
+	}
+
+	@Override
+	@Transactional
+	public Boolean changePasswordForAccountVerification(User theUser, String theNewPassword) {
+		return userDAO.changePasswordForUser(theUser,passwordEncoder.encode(theNewPassword));
+	}
+
 	private void sendVerificationEmail(User theUser, String verifyURL, String subject)
 			throws MessagingException, UnsupportedEncodingException {
 		String toAddress = theUser.getEmail();
 		String fromAddress="photopia@gmail.com";
 		String senderName = "Photopia Admin";
 		String content = "Dear [[name]],<br>"
-				+ "Click the link below to verify your registration:<br>"
+				+ "Click the link below: <br>"
 				+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
 				+ "Thank you,<br>"
 				+ "Photopia";

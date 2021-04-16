@@ -215,7 +215,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 		Query<User> theQuery=currentSession.createQuery("from User where verificationCode=:VerificationCode");
 		theQuery.setParameter("VerificationCode",theVerificationCode);
 		User theUser = (User) theQuery.uniqueResult();
-		if (theUser == null || !theUser.isEnabled()) {
+		if (theUser == null) {
 			return null;
 		} else {
 			theUser.setVerificationCode(null);

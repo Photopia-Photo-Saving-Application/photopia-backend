@@ -145,11 +145,14 @@ public class AuthenticationRestController {
     @PatchMapping("/forgotPassword")
     public String forgotUserPassword(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
         try{
-            boolean result=userService.newPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
-            if(!result){
+            User theUser=userService.forgotPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
+            if(theUser==null){
                 return "No user is registered with this email";
             }
-            return  "Check your email to change password";
+            if(!theUser.isEnabled()){
+                return "User is not verified yet to do this operation";
+            }
+            return  "Check your email to recover account";
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }

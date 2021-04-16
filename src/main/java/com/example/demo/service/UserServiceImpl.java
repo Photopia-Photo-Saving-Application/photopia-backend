@@ -132,14 +132,14 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 	@Override
 	@Transactional
-	public boolean newPasswordForUser(String theEmail, String siteURL) throws UnsupportedEncodingException, MessagingException {
+	public User forgotPasswordForUser(String theEmail, String siteURL) throws UnsupportedEncodingException, MessagingException {
 		User theUser = userDAO.getUserByEmail(theEmail);
 		if(theUser==null){
-			return false;
+			return null;
 		}
 		userDAO.registerUser(theUser);
 		sendVerificationEmail(theUser, siteURL+"/auth/recoverAccount?code="+theUser.getVerificationCode(), "Please recover your account");
-		return true;
+		return theUser;
 	}
 
 	@Override

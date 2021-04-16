@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.taaha.photopia.models;
 
 import java.io.Serializable;
 

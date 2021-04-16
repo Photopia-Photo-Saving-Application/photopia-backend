@@ -1,11 +1,11 @@
-package com.example.demo.rest;
+package com.taaha.photopia.rest;
 
-import com.example.demo.entity.User;
-import com.example.demo.filters.JwtRequestFilter;
-import com.example.demo.models.AuthenticationRequest;
-import com.example.demo.models.AuthenticationResponse;
-import com.example.demo.service.UserServiceImpl;
-import com.example.demo.util.JwtUtil;
+import com.taaha.photopia.entity.User;
+import com.taaha.photopia.filters.JwtRequestFilter;
+import com.taaha.photopia.models.AuthenticationRequest;
+import com.taaha.photopia.models.AuthenticationResponse;
+import com.taaha.photopia.service.UserServiceImpl;
+import com.taaha.photopia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;

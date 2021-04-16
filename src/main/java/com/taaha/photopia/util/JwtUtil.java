@@ -1,6 +1,6 @@
-package com.example.demo.util;
+package com.taaha.photopia.util;
 
-import com.example.demo.entity.User;
+import com.taaha.photopia.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

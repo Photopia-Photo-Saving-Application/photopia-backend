@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package com.taaha.photopia.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import com.example.demo.entity.User;
+import com.taaha.photopia.entity.User;
 
 import javax.mail.MessagingException;
 

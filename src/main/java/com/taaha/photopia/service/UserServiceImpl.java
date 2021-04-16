@@ -1,10 +1,10 @@
-package com.example.demo.service;
+package com.taaha.photopia.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.dao.UserDAOHibernateImpl;
+import com.taaha.photopia.dao.UserDAOHibernateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.entity.User;
+import com.taaha.photopia.entity.User;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;

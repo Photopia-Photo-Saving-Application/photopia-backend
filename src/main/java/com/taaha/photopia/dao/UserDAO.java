@@ -1,8 +1,8 @@
-package com.example.demo.dao;
+package com.taaha.photopia.dao;
 
 import java.util.List;
 
-import com.example.demo.entity.User;
+import com.taaha.photopia.entity.User;
 
 public interface UserDAO {
 

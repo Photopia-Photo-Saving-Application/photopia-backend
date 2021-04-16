@@ -1,13 +1,13 @@
-package com.example.demo;
+package com.taaha.photopia;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class PhotopiaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(PhotopiaApplication.class, args);
 		System.out.println("\n\nSpring Demo Application started ...");
 	}
 

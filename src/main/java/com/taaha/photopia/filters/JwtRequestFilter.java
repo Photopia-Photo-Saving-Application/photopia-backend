@@ -1,9 +1,9 @@
-package com.example.demo.filters;
+package com.taaha.photopia.filters;
 
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
-import com.example.demo.service.UserServiceImpl;
-import com.example.demo.util.JwtUtil;
+import com.taaha.photopia.entity.User;
+import com.taaha.photopia.service.UserService;
+import com.taaha.photopia.service.UserServiceImpl;
+import com.taaha.photopia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

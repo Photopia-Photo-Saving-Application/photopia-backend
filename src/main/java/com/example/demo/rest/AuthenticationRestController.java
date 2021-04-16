@@ -157,7 +157,6 @@ public class AuthenticationRestController {
     @PatchMapping("/recoverAccount")
     public String recoverAccount(@RequestBody LinkedHashMap theRequest,@RequestParam("code") String theVerificationCode, HttpServletRequest request) throws Exception{
         try{
-            System.out.println("verification check: "+theVerificationCode);
             User theUser= userService.verifyAccountRecovery(theVerificationCode);
             if(theUser==null){
                 return "User verification code didnot match";

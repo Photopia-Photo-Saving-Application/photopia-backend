@@ -122,8 +122,8 @@ public class AuthenticationRestController {
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
-
     }
+
     @PostMapping("/signUp")
     public String registerUser(@RequestBody User theUser, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
@@ -139,6 +139,33 @@ public class AuthenticationRestController {
             return "User verification successful";
         } else {
             return "User verification failed";
+        }
+    }
+
+    @PatchMapping("/forgotPassword")
+    public String forgotUserPassword(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
+        try{
+
+            boolean result=userService.newPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
+            if(!result){
+                return "No user is registered with this email";
+            }
+            return  "Check your email to change password";
+        }catch(Exception e){
+            throw new Exception("Could not find the user", e);
+        }
+    }
+    @PatchMapping("/recoverAccount?")
+    public String recoverAccount(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
+        try{
+
+//            boolean result=userService.newPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
+//            if(!result){
+//                return "No user is registered with this email";
+//            }
+            return  "Check your email to change password";
+        }catch(Exception e){
+            throw new Exception("Could not find the user", e);
         }
     }
 

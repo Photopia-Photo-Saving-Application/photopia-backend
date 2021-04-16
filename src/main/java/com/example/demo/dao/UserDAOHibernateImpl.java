@@ -170,7 +170,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 	}
 
 	@Override
-	public void registerUser(User theUser, String siteURL) {
+	public void registerUser(User theUser) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		String randomCode = RandomString.make(64);
 		theUser.setVerificationCode(randomCode);
@@ -194,6 +194,19 @@ public class UserDAOHibernateImpl implements UserDAO {
 			currentSession.update(user);
 			return true;
 		}
+	}
+
+	@Override
+	public User getUserByEmail(String theEmail) {
+		Session currentSession = entityManager.unwrap(Session.class);
+
+		Query theQuery =
+				currentSession.createQuery(
+						"from User where email=:userEmail");
+		theQuery.setParameter("userEmail", theEmail);
+		User theUser= (User) theQuery.uniqueResult();
+
+		return theUser;
 	}
 }
 

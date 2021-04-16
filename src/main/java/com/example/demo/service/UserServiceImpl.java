@@ -65,13 +65,13 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Transactional
 	public UserDetails loadUserByUsername(String theName) throws UsernameNotFoundException {
 
-		User user = userDAO.getUserByName(theName); //userDAO == null Causing NPE
+		User theUser = userDAO.getUserByName(theName); //userDAO == null Causing NPE
 
-		if (user == null)
+		if (theUser == null)
 			throw new UsernameNotFoundException("No user with the username!");
-		if(!user.isEnabled()) throw new UsernameNotFoundException("User is not verified");
+		if(!theUser.isEnabled()) throw new UsernameNotFoundException("User is not verified");
 		return new org.springframework.security.core.userdetails
-				.User(user.getName(), user.getPassword(), new ArrayList<>());
+				.User(theUser.getName(), theUser.getPassword(), new ArrayList<>());
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Transactional
 	public Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword) {
 		User theUser=userDAO.getUserByName(theUsername);
-		System.out.println(theUser.getPassword());
+		//System.out.println(theUser.getPassword());
 		if(!passwordEncoder.matches(theOldPassword,theUser.getPassword())){
 			return false;
 		}
@@ -117,9 +117,9 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Transactional
 	public void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException {
 
-		userDAO.registerUser(theUser,siteURL);
+		userDAO.registerUser(theUser);
 
-		sendVerificationEmail(theUser, siteURL);
+		sendVerificationEmail(theUser,siteURL+ "/auth/signUp/verify?code=" + theUser.getVerificationCode(), "Please verify your registration");
 	}
 
 	@Override
@@ -129,17 +129,16 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		return userDAO.verifyUser(theVerificationCode);
 	}
 
-	private void sendVerificationEmail(User theUser, String siteURL)
+	private void sendVerificationEmail(User theUser, String verifyURL, String subject)
 			throws MessagingException, UnsupportedEncodingException {
 		String toAddress = theUser.getEmail();
-		String fromAddress="demoSpring@gmail.com";
-		String senderName = "DemoSpringAuth";
-		String subject = "Please verify your registration";
+		String fromAddress="photopia@gmail.com";
+		String senderName = "Photopia Admin";
 		String content = "Dear [[name]],<br>"
-				+ "Please click the link below to verify your registration:<br>"
+				+ "Click the link below to verify your registration:<br>"
 				+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
 				+ "Thank you,<br>"
-				+ "DemoSpring";
+				+ "Photopia";
 
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -149,7 +148,6 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		helper.setSubject(subject);
 
 		content = content.replace("[[name]]", theUser.getName());
-		String verifyURL = siteURL + "/auth/signUp/verify?code=" + theUser.getVerificationCode();
 
 		content = content.replace("[[URL]]", verifyURL);
 

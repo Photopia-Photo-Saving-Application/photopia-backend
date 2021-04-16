@@ -65,6 +65,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers("/auth/signIn").permitAll().
 						antMatchers("/auth/signUp").permitAll().
 						antMatchers("/auth/signUp/verify").permitAll().
+						antMatchers("/auth/forgotPassword").permitAll().
 						anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

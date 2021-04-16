@@ -30,4 +30,6 @@ public interface UserService {
     void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException;
 
 	boolean verifyUser(String theVerificationCode);
+
+    //boolean newPasswordForUser(String theEmail, String siteURL) throws UnsupportedEncodingException, MessagingException;
 }

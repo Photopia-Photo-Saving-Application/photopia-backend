@@ -27,12 +27,8 @@ public class User{
 	@Column(name="enabled")
 	private boolean enabled;
 
-	@Column(name="verification_code",updatable = false)
+	@Column(name="verification_code")
 	private String verificationCode;
-//	@ManyToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name="superviser")
-//	private User superviser;
-	// define constructors
 	
 	public User() {
 		
@@ -112,6 +108,8 @@ public class User{
 				", email='" + email + '\'' +
 				", address='" + address + '\'' +
 				", password='" + password + '\'' +
+				", verificationCode='" + verificationCode + '\'' +
+				", enabled='" + enabled + '\'' +
 				'}';
 	}
 }

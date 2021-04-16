@@ -174,7 +174,10 @@ public class UserDAOHibernateImpl implements UserDAO {
 		Session currentSession = entityManager.unwrap(Session.class);
 		String randomCode = RandomString.make(64);
 		theUser.setVerificationCode(randomCode);
-		currentSession.save(theUser);
+		System.out.println("verification code: "+randomCode);
+		System.out.println(theUser.toString());
+		currentSession.saveOrUpdate(theUser);
+		System.out.println(theUser.toString());
 	}
 
 	@Override
@@ -212,12 +215,12 @@ public class UserDAOHibernateImpl implements UserDAO {
 	@Override
 	public User verifyAccountRecovery(String theVerificationCode) {
 		Session currentSession = entityManager.unwrap(Session.class);
-
-		Query theQuery=currentSession.createQuery("from User where verificationCode=:VerificationCode");
+		System.out.println("verification code dao: "+theVerificationCode);
+		Query<User> theQuery=currentSession.createQuery("from User where verificationCode=:VerificationCode");
 		theQuery.setParameter("VerificationCode",theVerificationCode);
 		User theUser = (User) theQuery.uniqueResult();
-
-		if (theUser == null ) {
+		System.out.println("after query");
+		if (theUser == null || !theUser.isEnabled()) {
 			return null;
 		} else {
 			theUser.setVerificationCode(null);

@@ -1,4 +1,4 @@
-package com.taaha.photopia.entity;
+package com.taaha.photopia.error;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ public class ErrorResponse {
     public ErrorResponse() {
     }
 
-    public ErrorResponse(Date timestamp, int status, String message, String details) {
+    public ErrorResponse(Date timestamp, int  status, String message, String details) {
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;

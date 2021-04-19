@@ -71,7 +71,7 @@ public class AuthenticationRestController {
 
         userService.insertToken(theUser.getUsername(),jwt);
         Map<String,String> payload=new HashMap<>();
-        payload.put("json",jwt);
+        payload.put("jwt",jwt);
         return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "Sign In Complete",payload),HttpStatus.OK);
     }
 

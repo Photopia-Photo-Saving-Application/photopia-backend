@@ -1,13 +1,18 @@
 package com.taaha.photopia.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.taaha.photopia.entity.Response;
 import com.taaha.photopia.entity.User;
+import com.taaha.photopia.error.ErrorResponse;
 import com.taaha.photopia.filters.JwtRequestFilter;
 import com.taaha.photopia.models.AuthenticationRequest;
 import com.taaha.photopia.models.AuthenticationResponse;
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -45,7 +53,7 @@ public class AuthenticationRestController {
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
@@ -62,20 +70,29 @@ public class AuthenticationRestController {
 
 
         userService.insertToken(theUser.getUsername(),jwt);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        Map<String,String> payload=new HashMap<>();
+        payload.put("json",jwt);
+        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "Sign In Complete",payload),HttpStatus.OK);
     }
 
     @PostMapping( "/signIn/auto")
     public String getUserByToken() throws Exception{
-
+        System.out.println("signIn auto method");
         return  "User found for the token";
+//        try{
+//            String jwt=jwtRequestFilter.getToken();
+//            return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "Token is valid",new Object()),HttpStatus.OK);
+//        }catch(Exception e){
+//            return new ResponseEntity(new ErrorResponse(new Date(), HttpStatus.FORBIDDEN.value(), "Token is invalid", e.getMessage()),HttpStatus.FORBIDDEN);
+//        }
+
     }
 
     @PostMapping( "/signOut")
     public String removeToken() throws Exception{
 
         try{
+
             String theToken= jwtRequestFilter.getToken();
 
             if(theToken == null){

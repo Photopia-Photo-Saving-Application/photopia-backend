@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taaha.photopia.entity.Response;
 import com.taaha.photopia.entity.User;
 import com.taaha.photopia.error.ErrorResponse;
+import com.taaha.photopia.error.UserNotFoundException;
 import com.taaha.photopia.filters.JwtRequestFilter;
 import com.taaha.photopia.models.AuthenticationRequest;
 import com.taaha.photopia.models.AuthenticationResponse;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,12 +65,8 @@ public class AuthenticationRestController {
             throw new Exception("Incorrect username or password", e);
         }
 
-
         final UserDetails theUser = userService.loadUserByUsername(authenticationRequest.getUsername());
-
         final String jwt = jwtTokenUtil.generateToken(theUser);
-
-
         userService.insertToken(theUser.getUsername(),jwt);
         Map<String,String> payload=new HashMap<>();
         payload.put("jwt",jwt);
@@ -76,116 +74,97 @@ public class AuthenticationRestController {
     }
 
     @PostMapping( "/signIn/auto")
-    public String getUserByToken() throws Exception{
-        System.out.println("signIn auto method");
-        return  "User found for the token";
-//        try{
-//            String jwt=jwtRequestFilter.getToken();
-//            return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "Token is valid",new Object()),HttpStatus.OK);
-//        }catch(Exception e){
-//            return new ResponseEntity(new ErrorResponse(new Date(), HttpStatus.FORBIDDEN.value(), "Token is invalid", e.getMessage()),HttpStatus.FORBIDDEN);
-//        }
-
+    public ResponseEntity<Object> getUserByToken() throws Exception{
+        Map<String,String> payload=new HashMap<>();
+        payload.put("jwt",jwtRequestFilter.getToken());
+        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "Token is valid",payload),HttpStatus.OK);
     }
 
     @PostMapping( "/signOut")
-    public String removeToken() throws Exception{
-
+    public ResponseEntity<Object> removeToken() throws UserNotFoundException{
         try{
-
-            String theToken= jwtRequestFilter.getToken();
-
-            if(theToken == null){
-                throw new Exception("No token exists");
-            }
-
-            userService.removeToken(theToken);
-        }catch(Exception e){
-            throw new Exception("Could not delete the token", e);
+            userService.removeToken(jwtRequestFilter.getToken());
+        }catch(UserNotFoundException e){
+            throw new UserNotFoundException("Could not delete the token", e);
         }
-        return  "User logged out of this device";
+        Map<String,String> payload=new HashMap<>();
+        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User logged out from this device",payload),HttpStatus.OK);
     }
 
     @PostMapping( "/signOutAllDevices")
-    public String removeTokenForUser() throws Exception{
-
+    public ResponseEntity<Object> removeTokenForUser() throws UsernameNotFoundException{
         try{
-            String theUsername= jwtRequestFilter.getUsername();
-
-            if(theUsername == null){
-                throw new Exception("No username exists");
-            }
-
-            userService.removeTokenForUser(theUsername);
-        }catch(Exception e){
-            throw new Exception("Could not find the user", e);
+            userService.removeTokenForUser(jwtRequestFilter.getUsername());
+        }catch(UsernameNotFoundException e){
+            throw new UserNotFoundException("Could not find the user", e);
         }
-        return  "User logged out of all devices";
+        Map<String,String> payload=new HashMap<>();
+        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User logged out of all devices",payload),HttpStatus.OK);
     }
 
     @PatchMapping("/passwordChange")
-    public String changeUserPassword(@RequestBody LinkedHashMap theRequest) throws Exception{
+    public ResponseEntity<Object> changeUserPassword(@RequestBody LinkedHashMap theRequest) throws Exception{
         try{
-            String theUsername= jwtRequestFilter.getUsername();
-
-            if(theUsername == null){
-                throw new Exception("No username exists");
-            }
-            boolean result=userService.changePasswordForUser(theUsername,(String) theRequest.get("oldpassword"),(String) theRequest.get("newpassword"));
+            boolean result=userService.changePasswordForUser(jwtRequestFilter.getUsername(),(String) theRequest.get("oldpassword"),(String) theRequest.get("newpassword"));
             if(!result){
-                return "You have entered wrong password";
+                throw new Exception("You have entered wrong password");
             }
-            return  "Password changed for the user";
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
+        Map<String,String> payload=new HashMap<>();
+        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User changed password successfully",payload),HttpStatus.OK);
     }
 
     @PostMapping("/signUp")
-    public String registerUser(@RequestBody User theUser, HttpServletRequest request)
+    public ResponseEntity<Object> registerUser(@RequestBody User theUser, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
-        //System.out.println("registerUser: "+theUser.toString());
         theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
         userService.registerUser(theUser, getSiteURL(request));
-        return "register_success";
+        Map<String,String> payload=new HashMap<>();
+        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User changed password successfully",payload),HttpStatus.OK);
     }
 
     @GetMapping("/signUp/verify")
-    public String verifyUser(@RequestParam("code") String theVerificationCode) {
+    public ResponseEntity<Object> verifyUser(@RequestParam("code") String theVerificationCode) {
+        Map<String,String> payload=new HashMap<>();
         if (userService.verifyUser(theVerificationCode)) {
-            return "User verification successful";
+            return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User verification successful",payload),HttpStatus.OK);
         } else {
-            return "User verification failed";
+            return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User verification error",payload),HttpStatus.OK);
         }
     }
 
     @PatchMapping("/forgotPassword")
-    public String forgotUserPassword(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
+    public ResponseEntity<Object> forgotUserPassword(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
+        Map<String,String> payload=new HashMap<>();
         try{
             User theUser=userService.forgotPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
             if(theUser==null){
-                return "No user is registered with this email";
+                throw new Exception("No user is registered with this email");
             }
             if(!theUser.isEnabled()){
-                return "User is not verified yet to do this operation";
+                throw new Exception("User is not verified yet to do this operation");
             }
-            return  "Check your email to recover account";
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
+        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(),"Check your email to recover account",payload),HttpStatus.OK);
     }
+
     @PatchMapping("/recoverAccount")
-    public String recoverAccount(@RequestBody LinkedHashMap theRequest,@RequestParam("code") String theVerificationCode, HttpServletRequest request) throws Exception{
+    public ResponseEntity<Object> recoverAccount(@RequestBody LinkedHashMap theRequest,@RequestParam("code") String theVerificationCode, HttpServletRequest request) throws Exception{
+        Map<String,String> payload=new HashMap<>();
         try{
             User theUser= userService.verifyAccountRecovery(theVerificationCode);
             if(theUser==null){
-                return "User verification code didnot match";
+                throw new Exception("User verification code didnot match");
             }
             userService.changePasswordForAccountVerification(theUser, (String) theRequest.get("password"));
-            return "Password changed for account recovery";
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
+        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(),"Password changed for account recovery",payload),HttpStatus.OK);
     }
 
     private String getSiteURL(HttpServletRequest request) {

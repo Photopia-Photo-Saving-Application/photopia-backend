@@ -17,44 +17,23 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
-    @Value("photopia")
+    @Value("${jwt.secret}")
     private String SECRET_KEY;
 
     public String extractUsername(String token) {
-//        try{
-//            System.out.println("hello from username");
-           return extractClaim(token, Claims::getSubject);
-//        } catch(UsernameNotFoundException e){
-//            throw new UsernameNotFoundException("No username for this token",e);
-//        }
+        return extractClaim(token, Claims::getSubject);
     }
 
     public Date extractExpiration(String token) {
-//        try{
-//            System.out.println("hello from extractExpiration");
-            return extractClaim(token, Claims::getExpiration);
-//        } catch(UsernameNotFoundException e) {
-//            throw new UsernameNotFoundException("No username for this token", e);
-//        }
+        return extractClaim(token, Claims::getExpiration);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-//        try{
-//            System.out.println("hello from extractclaims");
-            final Claims claims = extractAllClaims(token);
-            return claimsResolver.apply(claims);
-//        } catch(UsernameNotFoundException e) {
-//            throw new UsernameNotFoundException("No username for this token", e);
-//        }
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
     private Claims extractAllClaims(String token) {
-//        try{
-//            System.out.println("hello from extractAllclaims");
-            return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-//        } catch(UsernameNotFoundException e) {
-//            System.out.println("hello from extractAllclaims exception");
-//            throw new UsernameNotFoundException("No username for this token", e);
-//        }
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {

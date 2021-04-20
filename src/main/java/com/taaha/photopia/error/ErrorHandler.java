@@ -44,7 +44,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         System.out.println("inside method argument not valid exception");
-        ErrorResponse errorResponse = new ErrorResponse(new Date(),  HttpStatus.BAD_REQUEST.value(), "BAD REQUEST", "Validation Failed",
+        ErrorResponse errorResponse = new ErrorResponse(new Date(),  HttpStatus.BAD_REQUEST.value(), "BAD REQUEST", "Validation failed",
                 ex.getBindingResult().toString());
         return new ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST);
     }

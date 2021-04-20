@@ -1,11 +1,25 @@
 package com.taaha.photopia.models;
 
+import com.sun.istack.NotNull;
+import com.taaha.photopia.validator.ValidPassword;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class AuthenticationRequest implements Serializable {
 
-
+    @NotNull
+    @NotEmpty(message="Name(empty) is mandatory")
+    @NotBlank(message="Name(blank) is mandatory")
+    @Size(min=2,message = "Name(size) at least wo character")
     private String username;
+
+    @NotNull
+    @NotEmpty(message="Email(empty) is mandatory")
+    @NotBlank(message="Email(blank) is mandatory")
+    @ValidPassword
     private String password;
 
     public String getUsername() {

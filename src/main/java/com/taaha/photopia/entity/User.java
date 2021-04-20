@@ -1,6 +1,13 @@
 package com.taaha.photopia.entity;
 
+import com.sun.istack.NotNull;
+import com.taaha.photopia.validator.ValidPassword;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -11,16 +18,32 @@ public class User{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	
+
+	@NotNull
+	@NotEmpty(message="Name(empty) is mandatory")
+	@NotBlank(message="Name(blank) is mandatory")
+	@Size(min=2,message = "Name(size) at least wo character")
 	@Column(name="name")
 	private String name;
-	
+
+	@NotNull
+	@NotEmpty(message="Email(empty) is mandatory")
+	@NotBlank(message="Email(blank) is mandatory")
+	@Email(message = "Email is not valid")
 	@Column(name="email")
 	private String email;
 
+	@NotNull
+	@NotEmpty(message="Email(empty) is mandatory")
+	@NotBlank(message="Email(blank) is mandatory")
+	@Size(min=2,message = "Name(size) at least wo character")
 	@Column(name="address")
 	private String address;
 
+	@NotNull
+	@NotEmpty(message="Email(empty) is mandatory")
+	@NotBlank(message="Email(blank) is mandatory")
+	@ValidPassword
 	@Column(name="password")
 	private String password;
 

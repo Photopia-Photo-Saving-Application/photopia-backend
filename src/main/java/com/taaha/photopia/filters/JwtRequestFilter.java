@@ -52,23 +52,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 try{
                     username = jwtUtil.extractUsername(jwt);
                 }catch(Exception e){
-//                    throw new Exception("Token is not valid",e);
+
                 }
 
             }
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                UserDetails user = this.userService.loadUserByUsername(username);
+                    UserDetails user = this.userService.loadUserByUsername(username);
+                    if (jwtUtil.validateToken(jwt, user)) {
 
-                if (jwtUtil.validateToken(jwt, user)) {
-
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            user, null, user.getAuthorities());
-                    usernamePasswordAuthenticationToken
-                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                                user, null, user.getAuthorities());
+                        usernamePasswordAuthenticationToken
+                                .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
             }
            // System.out.println("before chain dofilter");
             chain.doFilter(request, response);

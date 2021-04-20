@@ -6,17 +6,19 @@ public class ErrorResponse {
 
     private Date timestamp;
     private int status;
+    private String error;
     private String message;
-    private String details;
+    private String path;
 
     public ErrorResponse() {
     }
 
-    public ErrorResponse(Date timestamp, int  status, String message, String details) {
+    public ErrorResponse(Date timestamp, int  status, String error, String message, String details) {
         this.timestamp = timestamp;
         this.status = status;
+        this.error = error;
         this.message = message;
-        this.details = details;
+        this.path = details;
     }
 
     public Date getTimestamp() {
@@ -35,6 +37,14 @@ public class ErrorResponse {
         this.status = status;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -43,11 +53,11 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public String getDetails() {
-        return details;
+    public String getPath() {
+        return path;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setPath(String details) {
+        this.path = details;
     }
 }

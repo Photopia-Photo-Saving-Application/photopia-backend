@@ -33,7 +33,6 @@ public class SignInRequest implements Serializable {
         this.password = password;
     }
 
-    //need default constructor for JSON Parsing
     public SignInRequest()
     {
 

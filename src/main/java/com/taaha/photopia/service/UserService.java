@@ -27,7 +27,7 @@ public interface UserService {
 
 	Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword);
 
-    void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException;
+    void registerUser(User theUser, String siteURL) throws Exception;
 
 	boolean verifyUser(String theVerificationCode);
 

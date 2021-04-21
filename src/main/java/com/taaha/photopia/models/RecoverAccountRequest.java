@@ -2,7 +2,6 @@ package com.taaha.photopia.models;
 
 import com.taaha.photopia.validator.ValidPassword;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 
 public class RecoverAccountRequest implements Serializable {

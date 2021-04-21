@@ -1,6 +1,5 @@
-package com.taaha.photopia.entity;
+package com.taaha.photopia.models;
 
-import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.Map;

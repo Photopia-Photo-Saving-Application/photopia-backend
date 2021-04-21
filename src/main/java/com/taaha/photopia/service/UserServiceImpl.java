@@ -106,21 +106,31 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Override
 	@Transactional
 	public Boolean changePasswordForUser(String theUsername, String theOldPassword, String theNewPassword) {
+
 		User theUser=userDAO.getUserByName(theUsername);
 		//System.out.println(theUser.getPassword());
 		if(!passwordEncoder.matches(theOldPassword,theUser.getPassword())){
 			return false;
 		}
 		return userDAO.changePasswordForUser(theUser,passwordEncoder.encode( theNewPassword));
+
 	}
 
 	@Override
 	@Transactional
-	public void registerUser(User theUser, String siteURL) throws UnsupportedEncodingException, MessagingException {
+	public void registerUser(User theUser, String siteURL) throws Exception {
 
-		userDAO.registerUser(theUser);
+		User theUserByName= userDAO.getUserByName(theUser.getName());
+		User theUserByEmail= userDAO.getUserByEmail(theUser.getEmail());
+		if(theUserByName==null && theUserByEmail==null){
+			theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
+			userDAO.registerUser(theUser);
+			sendVerificationEmail(theUser,siteURL+ "/auth/signUp/verify?code=" + theUser.getVerificationCode(), "Please verify your registration");
+		}
+		else{
+			throw new Exception("User with same name or email already exists");
+		}
 
-		sendVerificationEmail(theUser,siteURL+ "/auth/signUp/verify?code=" + theUser.getVerificationCode(), "Please verify your registration");
 	}
 
 	@Override
@@ -133,6 +143,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	@Override
 	@Transactional
 	public User forgotPasswordForUser(String theEmail, String siteURL) throws UnsupportedEncodingException, MessagingException {
+
 		User theUser = userDAO.getUserByEmail(theEmail);
 		if(theUser==null){
 			return null;
@@ -140,22 +151,27 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		userDAO.registerUser(theUser);
 		sendVerificationEmail(theUser, siteURL+"/auth/recoverAccount?code="+theUser.getVerificationCode(), "Please recover your account");
 		return theUser;
+
 	}
 
 	@Override
 	@Transactional
 	public User verifyAccountRecovery(String theVerificationCode) {
+
 		return userDAO.verifyAccountRecovery(theVerificationCode);
+
 	}
 
 	@Override
 	@Transactional
 	public Boolean changePasswordForAccountVerification(User theUser, String theNewPassword) {
+
 		return userDAO.changePasswordForUser(theUser,passwordEncoder.encode(theNewPassword));
+
 	}
 
-	private void sendVerificationEmail(User theUser, String verifyURL, String subject)
-			throws MessagingException, UnsupportedEncodingException {
+	private void sendVerificationEmail(User theUser, String verifyURL, String subject) throws MessagingException, UnsupportedEncodingException {
+
 		String toAddress = theUser.getEmail();
 		String fromAddress="photopia@gmail.com";
 		String senderName = "Photopia Admin";

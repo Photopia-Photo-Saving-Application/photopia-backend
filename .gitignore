@@ -9,4 +9,5 @@ mvnw.cmd
 photopia.iml
 upload.bat
 src/main/resources/application.properties
+src/models/blah
 target

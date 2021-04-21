@@ -37,7 +37,6 @@ public class UserRestController {
 
 	}
 
-
 	@PostMapping("/users")
 	public User addUser(@RequestBody User theUser) {
 

@@ -126,7 +126,7 @@ public class AuthenticationRestController {
             throw new Exception("user with same name or email exists",e);
         }
         Map<String,String> payload=new HashMap<>();
-        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "auth/signUp: user signed up successful - check email for verification",payload),HttpStatus.OK);
+        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "auth/signUp: user sign up successful - check email for verification",payload),HttpStatus.OK);
 
     }
 

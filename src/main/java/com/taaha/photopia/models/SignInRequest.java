@@ -1,6 +1,7 @@
 package com.taaha.photopia.models;
 
 import com.sun.istack.NotNull;
+import com.taaha.photopia.validator.ValidPassword;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -8,16 +9,12 @@ import java.io.Serializable;
 public class SignInRequest implements Serializable {
 
     @NotNull
-    @NotEmpty(message="Name(empty) is mandatory")
-    @NotBlank(message="Name(blank) is mandatory")
-    @Size(min=2,message = "Name(size) at least wo character")
+    @NotEmpty(message="Username(empty) is mandatory")
+    @NotBlank(message="Username(blank) is mandatory")
+    @Size(min=2,message = "Username(size) at least wo character")
     private String username;
 
-    @NotNull
-    @NotEmpty(message="Password(empty) is mandatory")
-    @NotBlank(message="Password(blank) is mandatory")
-    @Min(value = 5,message = "min len 5")
-    @Max(value = 10,message = "max len 10")
+    @ValidPassword
     private String password;
 
     public String getUsername() {

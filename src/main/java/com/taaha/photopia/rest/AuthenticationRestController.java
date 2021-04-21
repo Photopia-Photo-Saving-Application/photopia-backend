@@ -5,6 +5,7 @@ import com.taaha.photopia.entity.User;
 import com.taaha.photopia.error.UserNotFoundException;
 import com.taaha.photopia.filters.JwtRequestFilter;
 import com.taaha.photopia.models.ForgotPasswordRequest;
+import com.taaha.photopia.models.PasswordChangeRequest;
 import com.taaha.photopia.models.RecoverAccountRequest;
 import com.taaha.photopia.models.SignInRequest;
 import com.taaha.photopia.service.UserServiceImpl;
@@ -104,9 +105,9 @@ public class AuthenticationRestController {
     }
 
     @PatchMapping("/passwordChange")
-    public ResponseEntity<Object> changeUserPassword(@RequestBody LinkedHashMap theRequest) throws Exception{
+    public ResponseEntity<Object> changeUserPassword(@Valid @RequestBody PasswordChangeRequest theRequest) throws Exception{
         try{
-            boolean result=userService.changePasswordForUser(jwtRequestFilter.getUsername(),(String) theRequest.get("oldpassword"),(String) theRequest.get("newpassword"));
+            boolean result=userService.changePasswordForUser(jwtRequestFilter.getUsername(),theRequest.getOldpassword(),theRequest.getNewpassword());
             if(!result){
                 throw new Exception("You have entered wrong password");
             }

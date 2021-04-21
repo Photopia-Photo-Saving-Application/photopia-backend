@@ -5,6 +5,7 @@ import com.taaha.photopia.entity.User;
 import com.taaha.photopia.error.UserNotFoundException;
 import com.taaha.photopia.filters.JwtRequestFilter;
 import com.taaha.photopia.models.ForgotPasswordRequest;
+import com.taaha.photopia.models.RecoverAccountRequest;
 import com.taaha.photopia.models.SignInRequest;
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;
@@ -147,22 +148,22 @@ public class AuthenticationRestController {
                 throw new Exception("User is not verified yet to do this operation");
             }
         }catch(Exception e){
-            throw new Exception("Could not find the user", e);
+            throw new Exception("Could not find the user for the email", e);
         }
           return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(),"Check your email to recover account",payload),HttpStatus.OK);
     }
 
     @PatchMapping("/recoverAccount")
-    public ResponseEntity<Object> recoverAccount(@RequestBody LinkedHashMap theRequest,@RequestParam("code") String theVerificationCode, HttpServletRequest request) throws Exception{
+    public ResponseEntity<Object> recoverAccount(@Valid @RequestBody RecoverAccountRequest theRequest, @RequestParam("code") String theVerificationCode, HttpServletRequest request) throws Exception{
         Map<String,String> payload=new HashMap<>();
         try{
             User theUser= userService.verifyAccountRecovery(theVerificationCode);
             if(theUser==null){
                 throw new Exception("User verification code didnot match");
             }
-            userService.changePasswordForAccountVerification(theUser, (String) theRequest.get("password"));
+            userService.changePasswordForAccountVerification(theUser, (String) theRequest.getPassword());
         }catch(Exception e){
-            throw new Exception("Could not find the user", e);
+            throw new Exception("Could not find the user for the token", e);
         }
         return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(),"Password changed for account recovery",payload),HttpStatus.OK);
     }

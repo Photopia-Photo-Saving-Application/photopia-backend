@@ -124,9 +124,7 @@ public class AuthenticationRestController {
     public ResponseEntity<Object> registerUser(@Valid @RequestBody User theUser, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
         theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
-        System.out.println("signUp registeruser");
         userService.registerUser(theUser, getSiteURL(request));
-        System.out.println("signUp registeruser 2");
         Map<String,String> payload=new HashMap<>();
         return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User signed up successfully. Check your email for verification",payload),HttpStatus.OK);
     }

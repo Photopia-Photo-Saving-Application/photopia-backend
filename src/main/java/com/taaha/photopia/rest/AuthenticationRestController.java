@@ -10,6 +10,7 @@ import com.taaha.photopia.models.AuthenticationRequest;
 import com.taaha.photopia.models.AuthenticationResponse;
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;
+import com.taaha.photopia.validator.ValidPassword;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -120,16 +121,18 @@ public class AuthenticationRestController {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<Object> registerUser(@RequestBody User theUser, HttpServletRequest request)
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody User theUser, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
         theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
+        System.out.println("signUp registeruser");
         userService.registerUser(theUser, getSiteURL(request));
+        System.out.println("signUp registeruser 2");
         Map<String,String> payload=new HashMap<>();
-        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User changed password successfully",payload),HttpStatus.OK);
+        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User signed up successfully. Check your email for verification",payload),HttpStatus.OK);
     }
 
     @GetMapping("/signUp/verify")
-    public ResponseEntity<Object> verifyUser(@RequestParam("code") String theVerificationCode) {
+    public ResponseEntity<Object> verifyUser(@RequestParam(value = "code") String theVerificationCode) {
         Map<String,String> payload=new HashMap<>();
         if (userService.verifyUser(theVerificationCode)) {
             return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "User verification successful",payload),HttpStatus.OK);

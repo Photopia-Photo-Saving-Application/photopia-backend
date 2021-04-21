@@ -2,6 +2,7 @@ package com.taaha.photopia.entity;
 
 import com.sun.istack.NotNull;
 import com.taaha.photopia.validator.ValidPassword;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -19,30 +20,21 @@ public class User{
 	@Column(name="id")
 	private int id;
 
+	//@notEmpty=@NotNull+@NotBlank
 	@NotNull
-	@NotEmpty(message="Name(empty) is mandatory")
 	@NotBlank(message="Name(blank) is mandatory")
+	@NotEmpty(message="Name(empty) is mandatory")
 	@Size(min=2,message = "Name(size) at least wo character")
 	@Column(name="name")
 	private String name;
 
-	@NotNull
+
 	@NotEmpty(message="Email(empty) is mandatory")
-	@NotBlank(message="Email(blank) is mandatory")
 	@Email(message = "Email is not valid")
 	@Column(name="email")
 	private String email;
 
-	@NotNull
-	@NotEmpty(message="Email(empty) is mandatory")
-	@NotBlank(message="Email(blank) is mandatory")
-	@Size(min=2,message = "Name(size) at least wo character")
-	@Column(name="address")
-	private String address;
 
-	@NotNull
-	@NotEmpty(message="Email(empty) is mandatory")
-	@NotBlank(message="Email(blank) is mandatory")
 	@ValidPassword
 	@Column(name="password")
 	private String password;
@@ -57,10 +49,9 @@ public class User{
 		
 	}
 
-	public User(String name, String email, String address, String password) {
+	public User(String name, String email, String password) {
 		this.name = name;
 		this.email = email;
-		this.address = address;
 		this.password = password;
 		this.enabled=false;
 	}
@@ -89,14 +80,6 @@ public class User{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 
 	public String getPassword() {
@@ -129,7 +112,6 @@ public class User{
 				"id=" + id +
 				", name='" + name + '\'' +
 				", email='" + email + '\'' +
-				", address='" + address + '\'' +
 				", password='" + password + '\'' +
 				", verificationCode='" + verificationCode + '\'' +
 				", enabled='" + enabled + '\'' +

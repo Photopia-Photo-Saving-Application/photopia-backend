@@ -1,19 +1,14 @@
 package com.taaha.photopia.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taaha.photopia.entity.Response;
 import com.taaha.photopia.entity.User;
-import com.taaha.photopia.error.ErrorResponse;
 import com.taaha.photopia.error.UserNotFoundException;
 import com.taaha.photopia.filters.JwtRequestFilter;
-import com.taaha.photopia.models.AuthenticationRequest;
-import com.taaha.photopia.models.AuthenticationResponse;
+import com.taaha.photopia.models.ForgotPasswordRequest;
+import com.taaha.photopia.models.SignInRequest;
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;
-import com.taaha.photopia.validator.ValidPassword;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,17 +55,17 @@ public class AuthenticationRestController {
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<Object> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<Object> createAuthenticationToken(@Valid @RequestBody SignInRequest theRequest) throws Exception {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(theRequest.getUsername(), theRequest.getPassword())
             );
         }
         catch (BadCredentialsException e) {
             throw new Exception("Incorrect username or password", e);
         }
 
-        final UserDetails theUser = userService.loadUserByUsername(authenticationRequest.getUsername());
+        final UserDetails theUser = userService.loadUserByUsername(theRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(theUser);
         userService.insertToken(theUser.getUsername(),jwt);
         Map<String,String> payload=new HashMap<>();
@@ -140,10 +136,10 @@ public class AuthenticationRestController {
     }
 
     @PatchMapping("/forgotPassword")
-    public ResponseEntity<Object> forgotUserPassword(@RequestBody LinkedHashMap theRequest, HttpServletRequest request) throws Exception{
+    public ResponseEntity<Object> forgotUserPassword(@Valid @RequestBody ForgotPasswordRequest theRequest, HttpServletRequest request) throws Exception{
         Map<String,String> payload=new HashMap<>();
         try{
-            User theUser=userService.forgotPasswordForUser((String) theRequest.get("email"), getSiteURL(request));
+            User theUser=userService.forgotPasswordForUser((String) theRequest.getEmail(), getSiteURL(request));
             if(theUser==null){
                 throw new Exception("No user is registered with this email");
             }
@@ -153,7 +149,7 @@ public class AuthenticationRestController {
         }catch(Exception e){
             throw new Exception("Could not find the user", e);
         }
-        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(),"Check your email to recover account",payload),HttpStatus.OK);
+          return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(),"Check your email to recover account",payload),HttpStatus.OK);
     }
 
     @PatchMapping("/recoverAccount")

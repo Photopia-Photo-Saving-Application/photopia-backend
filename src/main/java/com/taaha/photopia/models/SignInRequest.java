@@ -5,7 +5,7 @@ import com.sun.istack.NotNull;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
-public class AuthenticationRequest implements Serializable {
+public class SignInRequest implements Serializable {
 
     @NotNull
     @NotEmpty(message="Name(empty) is mandatory")
@@ -37,12 +37,12 @@ public class AuthenticationRequest implements Serializable {
     }
 
     //need default constructor for JSON Parsing
-    public AuthenticationRequest()
+    public SignInRequest()
     {
 
     }
 
-    public AuthenticationRequest(String username, String password) {
+    public SignInRequest(String username, String password) {
         this.setUsername(username);
         this.setPassword(password);
     }

@@ -2,16 +2,8 @@ package com.taaha.photopia.rest;
 
 import java.util.List;
 
-import com.taaha.photopia.models.AuthenticationRequest;
-import com.taaha.photopia.models.AuthenticationResponse;
 import com.taaha.photopia.service.UserServiceImpl;
-import com.taaha.photopia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.taaha.photopia.entity.User;

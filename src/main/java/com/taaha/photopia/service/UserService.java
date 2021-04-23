@@ -36,4 +36,6 @@ public interface UserService {
 	User verifyAccountRecovery(String theVerificationCode);
 
 	Boolean changePasswordForAccountVerification(User theUser, String theNewPassword);
+
+    void removeUser(String theName);
 }

@@ -174,6 +174,19 @@ public class AuthenticationRestController {
         return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(),"auth/recoverAccount: user password changed for account recovery successful",payload),HttpStatus.OK);
     }
 
+    @DeleteMapping( "/deleteAccount")
+    public ResponseEntity<Object> removeUser() throws UsernameNotFoundException{
+
+        try{
+            userService.removeUser(jwtRequestFilter.getUsername());
+        }catch(UsernameNotFoundException e){
+            throw new UsernameNotFoundException("could not find user for the token", e);
+        }
+        Map<String,String> payload=new HashMap<>();
+        return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "auth/deleteAccount: account deletion successful",payload),HttpStatus.OK);
+
+    }
+
     private String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");

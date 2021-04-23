@@ -14,6 +14,8 @@ public interface UserDAO {
 	
 	void deleteById(int theId);
 
+	void deleteByName(String  theName);
+
 	User getUserByName(String theName);
 
 	void insertToken(String theUsername, String theToken);

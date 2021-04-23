@@ -170,6 +170,12 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 	}
 
+	@Override
+	@Transactional
+	public void removeUser(String theName) {
+		userDAO.deleteByName(theName);
+	}
+
 	private void sendVerificationEmail(User theUser, String verifyURL, String subject) throws MessagingException, UnsupportedEncodingException {
 
 		String toAddress = theUser.getEmail();

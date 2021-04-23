@@ -80,6 +80,27 @@ public class UserDAOHibernateImpl implements UserDAO {
 	}
 
 	@Override
+	public void deleteByName(String theName) {
+
+		// get the current hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+
+		Query theQuery1 = currentSession.createNativeQuery("delete from usertoken where username=:userName");
+
+		theQuery1.setParameter("userName", theName);
+
+		theQuery1.executeUpdate();
+
+		// delete object with primary key
+		Query theQuery2 = currentSession.createQuery("delete from User where name=:userName");
+
+		theQuery2.setParameter("userName", theName);
+
+		theQuery2.executeUpdate();
+
+	}
+
+	@Override
 	public User getUserByName(String theName) {
 
 		Session currentSession = entityManager.unwrap(Session.class);

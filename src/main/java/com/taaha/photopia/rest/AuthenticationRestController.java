@@ -49,6 +49,7 @@ public class AuthenticationRestController {
         userService = theUserService;
     }
 
+    @CrossOrigin(origins = "http://localhost:8081/signIn")
     @PostMapping("/signIn")
     public ResponseEntity<Object> createAuthenticationToken(@Valid @RequestBody SignInRequest theRequest) throws Exception {
 
@@ -67,7 +68,7 @@ public class AuthenticationRestController {
 
     }
 
-    @PostMapping( "/signIn/auto")
+    @GetMapping( "/signIn/auto")
     public ResponseEntity<Object> getUserByToken() {
 
         Map<String,String> payload=new HashMap<>();

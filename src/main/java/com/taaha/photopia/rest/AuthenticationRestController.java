@@ -11,6 +11,7 @@ import com.taaha.photopia.models.SignInRequest;
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +42,8 @@ public class AuthenticationRestController {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
+    @Value("${frontend.url}")
+    private String siteURL;
 
     private UserServiceImpl userService;
 
@@ -122,7 +125,8 @@ public class AuthenticationRestController {
     @PostMapping("/signUp")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody User theUser, HttpServletRequest request) throws Exception {
         try{
-            userService.registerUser(theUser, getSiteURL(request));
+//            userService.registerUser(theUser, getSiteURL(request));
+            userService.registerUser(theUser, siteURL);
         }catch(Exception e){
             throw new Exception("user with same name or email exists",e);
         }

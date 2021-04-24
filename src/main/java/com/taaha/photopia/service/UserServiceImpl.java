@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		if(theUserByName==null && theUserByEmail==null){
 			theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
 			userDAO.registerUser(theUser);
-			sendVerificationEmail(theUser,siteURL+ "/auth/signUp/verify?code=" + theUser.getVerificationCode(), "Please verify your registration");
+			sendVerificationEmail(theUser,siteURL+ "/signUp/verify?code=" + theUser.getVerificationCode(), "Please verify your registration");
 		}
 		else{
 			throw new Exception("User with same name or email already exists");

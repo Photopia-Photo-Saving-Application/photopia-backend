@@ -137,7 +137,6 @@ public class AuthenticationRestController {
 
     @GetMapping("/signUp/verify")
     public ResponseEntity<Object> verifyUser(@RequestParam(value = "code") String theVerificationCode) throws Exception {
-
         Map<String,String> payload=new HashMap<>();
         if (userService.verifyUser(theVerificationCode)) {
             return  new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "auth/signUp/verify: user verification successful",payload),HttpStatus.OK);

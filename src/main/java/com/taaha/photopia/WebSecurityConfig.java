@@ -2,6 +2,7 @@ package com.taaha.photopia;
 
 import com.taaha.photopia.filters.JwtRequestFilter;
 import com.taaha.photopia.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ import java.util.Arrays;
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Value("${frontend.url}")
+	private String corsOrigin;
 
 	@Autowired
 	private UserServiceImpl userService;
@@ -68,7 +71,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		final String corsOrigin="http://localhost:8081";
+//		final String corsOrigin="http://localhost:8081";
 		httpSecurity.csrf().disable()
 				.authorizeRequests().
 						antMatchers("/auth/signIn").permitAll().

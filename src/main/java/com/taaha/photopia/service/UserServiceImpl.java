@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 			return null;
 		}
 		userDAO.registerUser(theUser);
-		sendVerificationEmail(theUser, siteURL+"/auth/recoverAccount?code="+theUser.getVerificationCode(), "Please recover your account");
+		sendVerificationEmail(theUser, siteURL+"/recoverAccount?code="+theUser.getVerificationCode(), "Please recover your account");
 		return theUser;
 
 	}

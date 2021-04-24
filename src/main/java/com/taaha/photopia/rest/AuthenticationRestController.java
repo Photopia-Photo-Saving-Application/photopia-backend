@@ -150,7 +150,7 @@ public class AuthenticationRestController {
     public ResponseEntity<Object> forgotUserPassword(@Valid @RequestBody ForgotPasswordRequest theRequest, HttpServletRequest request) throws Exception{
         Map<String,String> payload=new HashMap<>();
         try{
-            User theUser=userService.forgotPasswordForUser(theRequest.getEmail(), getSiteURL(request));
+            User theUser=userService.forgotPasswordForUser(theRequest.getEmail(), siteURL);
             if(theUser==null){
                 throw new Exception("no user registered with this email");
             }

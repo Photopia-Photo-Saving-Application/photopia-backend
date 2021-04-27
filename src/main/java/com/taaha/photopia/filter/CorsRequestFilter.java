@@ -1,4 +1,4 @@
-package com.taaha.photopia.filters;
+package com.taaha.photopia.filter;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

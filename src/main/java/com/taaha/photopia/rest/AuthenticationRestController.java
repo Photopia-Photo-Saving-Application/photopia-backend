@@ -1,13 +1,13 @@
 package com.taaha.photopia.rest;
 
-import com.taaha.photopia.models.Response;
+import com.taaha.photopia.model.Response;
 import com.taaha.photopia.entity.User;
 import com.taaha.photopia.error.UserNotFoundException;
-import com.taaha.photopia.filters.JwtRequestFilter;
-import com.taaha.photopia.models.ForgotPasswordRequest;
-import com.taaha.photopia.models.PasswordChangeRequest;
-import com.taaha.photopia.models.RecoverAccountRequest;
-import com.taaha.photopia.models.SignInRequest;
+import com.taaha.photopia.filter.JwtRequestFilter;
+import com.taaha.photopia.model.ForgotPasswordRequest;
+import com.taaha.photopia.model.PasswordChangeRequest;
+import com.taaha.photopia.model.RecoverAccountRequest;
+import com.taaha.photopia.model.SignInRequest;
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class AuthenticationRestController {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    @Value("${FRONTEND_URL}")
+    @Value("${frontend.url}")
     private String siteURL;
 
     private UserServiceImpl userService;

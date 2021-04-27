@@ -1,9 +1,8 @@
-package com.taaha.photopia;
+package com.taaha.photopia.configuration;
 
-import com.taaha.photopia.filters.JwtRequestFilter;
+import com.taaha.photopia.filter.JwtRequestFilter;
 import com.taaha.photopia.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +29,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Value("${FRONTEND_URL}")
+	@Value("${frontend.url}")
 	private String corsOrigin;
 
 	@Autowired
@@ -71,7 +70,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-//		final String corsOrigin="http://localhost:8081";
 		httpSecurity.csrf().disable()
 				.authorizeRequests().
 						antMatchers("/auth/signIn").permitAll().
@@ -79,8 +77,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						antMatchers("/auth/signUp/verify").permitAll().
 						antMatchers("/auth/forgotPassword").permitAll().
 						antMatchers("/auth/recoverAccount").permitAll().
-						antMatchers("/api/users").permitAll().
-						antMatchers("/api/users/*").permitAll().
+						antMatchers("/api/*").permitAll().
 						anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

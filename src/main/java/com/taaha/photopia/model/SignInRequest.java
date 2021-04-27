@@ -1,4 +1,4 @@
-package com.taaha.photopia.models;
+package com.taaha.photopia.model;
 
 import com.sun.istack.NotNull;
 import com.taaha.photopia.validator.ValidPassword;

@@ -1,4 +1,4 @@
-package com.taaha.photopia.filters;
+package com.taaha.photopia.filter;
 
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;

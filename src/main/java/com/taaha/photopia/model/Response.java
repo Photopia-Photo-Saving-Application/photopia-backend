@@ -1,4 +1,4 @@
-package com.taaha.photopia.models;
+package com.taaha.photopia.model;
 
 
 import java.util.Date;

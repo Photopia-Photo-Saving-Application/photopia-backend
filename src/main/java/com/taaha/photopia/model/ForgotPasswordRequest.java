@@ -1,4 +1,4 @@
-package com.taaha.photopia.models;
+package com.taaha.photopia.model;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

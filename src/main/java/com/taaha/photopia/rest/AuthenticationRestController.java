@@ -42,7 +42,7 @@ public class AuthenticationRestController {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    @Value("${frontend.url}")
+    @Value("${FRONTEND_URL}")
     private String siteURL;
 
     private UserServiceImpl userService;

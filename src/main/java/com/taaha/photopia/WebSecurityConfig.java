@@ -30,7 +30,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Value("${frontend.url}")
+	@Value("${FRONTEND_URL}")
 	private String corsOrigin;
 
 	@Autowired

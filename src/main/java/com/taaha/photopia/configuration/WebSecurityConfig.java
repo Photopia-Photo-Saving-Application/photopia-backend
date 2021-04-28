@@ -77,12 +77,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						antMatchers("/auth/signUp/verify").permitAll().
 						antMatchers("/auth/forgotPassword").permitAll().
 						antMatchers("/auth/recoverAccount").permitAll().
-						antMatchers("/api/*").permitAll().
 						anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-			httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-					.addFilterBefore(new CorsFilter(corsConfigurationSource(corsOrigin)), AbstractPreAuthenticatedProcessingFilter.class);
+			httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//					.addFilterBefore(new CorsFilter(corsConfigurationSource(corsOrigin)), AbstractPreAuthenticatedProcessingFilter.class);
 	}
 
 	private CorsConfigurationSource corsConfigurationSource(String corsOrigin) {

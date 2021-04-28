@@ -1,6 +1,7 @@
 package com.taaha.photopia.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.*;
@@ -16,15 +17,18 @@ import org.apache.commons.io.IOUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.Channels;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+
+import static java.rmi.Naming.list;
 
 @Service
 public class StorageServiceFirebaseImpl implements StorageService {
@@ -54,16 +58,35 @@ public class StorageServiceFirebaseImpl implements StorageService {
 
         @Override
         @Transactional
-        public String[] uploadFile(MultipartFile multipartFile) throws IOException {
-            String objectName = generateFileName(multipartFile);
+        public String uploadImage(MultipartFile theImage,String theUsername) throws IOException,Exception {
+            String objectName = generateFileName(theImage);
             Storage storage = storageOptions.getService();
-            BlobId blobId = BlobId.of(bucketName, "Taaha/"+objectName);
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-            Blob blob = storage.create(blobInfo, multipartFile.getBytes());
-            System.out.println("File " + multipartFile.getOriginalFilename() + " uploaded to bucket " + bucketName + " as " + objectName);
-            return new String[]{"fileUrl", objectName};
+            BlobId blobId = BlobId.of(bucketName, theUsername+"/"+objectName);
+            String imageName=theImage.getOriginalFilename();
+            String imageExtension=(imageName.split("\\.")[1]).toLowerCase();
+            if(!imageExtension.equals("png") && !imageExtension.equals("jpg") && !imageExtension.equals("jpeg")){
+                throw new Exception("File type is not supported");
+            }
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/"+imageExtension).build();
+            Blob blob = storage.create(blobInfo, theImage.getBytes());
+            return objectName;
+            //System.out.println("File " + imageName+ " uploaded to bucket " + bucketName+"/"+theUsername + " as " + objectName);
         }
 
+
+//    @Override
+//    @Transactional
+//    public String[] uploadFile(MultipartFile multipartFile) throws IOException {
+//        Storage storage = storageOptions.getService();
+//        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.currentDirectory(), Storage.BlobListOption.prefix("Taaha/"));
+//        Iterable<Blob> blobIterator = blobs.iterateAll();
+//        List<String> IMAGEuRL=
+//        blobIterator.forEach(blob -> {
+//            if (!blob.isDirectory()) {
+//                System.out.println(blob.getName());
+//            }
+//        });
+//    }
 
     @Override
         public ResponseEntity<Object> downloadFile(String fileName, HttpServletRequest request) throws Exception {

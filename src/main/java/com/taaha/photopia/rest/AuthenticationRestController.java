@@ -52,7 +52,7 @@ public class AuthenticationRestController {
         userService = theUserService;
     }
 
-    @CrossOrigin(origins = "http://localhost:8081/signIn")
+//    @CrossOrigin(origins = "http://localhost:8081/signIn")
     @PostMapping("/signIn")
     public ResponseEntity<Object> createAuthenticationToken(@Valid @RequestBody SignInRequest theRequest) throws Exception {
 

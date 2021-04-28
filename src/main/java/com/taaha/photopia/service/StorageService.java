@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface StorageService {
 
-    String[] uploadFile(MultipartFile multipartFile) throws Exception;
+    String uploadImage(MultipartFile theImage, String theUsername) throws Exception;
 
     ResponseEntity<Object> downloadFile(String fileUrl, HttpServletRequest request) throws Exception;
 }

@@ -110,25 +110,15 @@ public class StorageServiceFirebaseImpl implements StorageService {
             String privateKey = environment.getRequiredProperty("FIREBASE_PRIVATE_KEY").replace("\\n", "\n");
 
             firebaseCredential.setType(environment.getRequiredProperty("FIREBASE_TYPE"));
-            System.out.println(environment.getRequiredProperty("FIREBASE_TYPE"));
             firebaseCredential.setProject_id(projectId);
-            System.out.println(projectId);
             firebaseCredential.setPrivate_key_id("FIREBASE_PRIVATE_KEY_ID");
-            System.out.println(environment.getRequiredProperty("FIREBASE_PRIVATE_KEY_ID"));
             firebaseCredential.setPrivate_key(privateKey);
-            System.out.println(privateKey);
             firebaseCredential.setClient_email(environment.getRequiredProperty("FIREBASE_CLIENT_EMAIL"));
-            System.out.println(environment.getRequiredProperty("FIREBASE_CLIENT_EMAIL"));
             firebaseCredential.setClient_id(environment.getRequiredProperty("FIREBASE_CLIENT_ID"));
-            System.out.println(environment.getRequiredProperty("FIREBASE_CLIENT_ID"));
             firebaseCredential.setAuth_uri(environment.getRequiredProperty("FIREBASE_AUTH_URI"));
-            System.out.println(environment.getRequiredProperty("FIREBASE_AUTH_URI"));
             firebaseCredential.setToken_uri(environment.getRequiredProperty("FIREBASE_TOKEN_URI"));
-            System.out.println(environment.getRequiredProperty("FIREBASE_TOKEN_URI"));
             firebaseCredential.setAuth_provider_x509_cert_url(environment.getRequiredProperty("FIREBASE_AUTH_PROVIDER_X509_CERT_URL"));
-            System.out.println(environment.getRequiredProperty("FIREBASE_AUTH_PROVIDER_X509_CERT_URL"));
             firebaseCredential.setClient_x509_cert_url(environment.getRequiredProperty("FIREBASE_CLIENT_X509_CERT_URL"));
-            System.out.println(environment.getRequiredProperty("FIREBASE_CLIENT_X509_CERT_URL"));
 
             ObjectMapper mapper = new ObjectMapper();
             String jsonString = mapper.writeValueAsString(firebaseCredential);

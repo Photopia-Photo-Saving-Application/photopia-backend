@@ -37,12 +37,20 @@ public class UserFileHandlingController {
 
     @GetMapping("/images")
     public ResponseEntity<Object> fetchUserImage() throws Exception {
-        //upload files
-        System.out.println("inside get/api/images");
+
         ArrayList<String> imageList=storageService.fetchUserImage(jwtRequestFilter.getUsername());
         Map<String, ArrayList<String>> payload=new HashMap<>();
         payload.put("imageList",imageList);
         return new ResponseEntity(new Response2(new Date(), HttpStatus.OK.value(), "api/image: image fetch successful",payload),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/images/{image}")
+    public ResponseEntity<Object> deleteImage(@PathVariable("image") String theImage) throws Exception {
+
+        System.out.println("inside delete/api/images");
+        storageService.deleteImage(theImage, jwtRequestFilter.getUsername());
+        Map<String, String> payload=new HashMap<>();
+        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "api/image: image deletion successful",payload),HttpStatus.OK);
     }
 
     @GetMapping("/download/{fileName:.+}")

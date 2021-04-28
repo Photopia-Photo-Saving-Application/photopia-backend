@@ -17,4 +17,6 @@ public interface StorageService {
     ArrayList<String> fetchUserImage(String theUsername) throws Exception;
 
     ResponseEntity<Object> downloadFile(String fileUrl, HttpServletRequest request) throws Exception;
+
+    void deleteImage(String theImage, String theUsername);
 }

@@ -89,6 +89,15 @@ public class StorageServiceFirebaseImpl implements StorageService {
     }
 
     @Override
+    @Transactional
+    public void deleteImage(String theImage, String theUsername) {
+        Storage storage = storageOptions.getService();
+        BlobId b = BlobId.of(bucketName, theUsername+"/"+theImage);
+        storage.delete(b);
+    }
+
+
+    @Override
         public ResponseEntity<Object> downloadFile(String fileName, HttpServletRequest request) throws Exception {
             Storage storage = storageOptions.getService();
 
@@ -112,8 +121,7 @@ public class StorageServiceFirebaseImpl implements StorageService {
 
         }
 
-
-        private String generateFileName(MultipartFile multiPart) {
+    private String generateFileName(MultipartFile multiPart) {
             return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
         }
 

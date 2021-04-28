@@ -55,14 +55,12 @@ public class StorageServiceFirebaseImpl implements StorageService {
         @Override
         @Transactional
         public String[] uploadFile(MultipartFile multipartFile) throws IOException {
-            File file = convertMultiPartToFile(multipartFile);
-            Path filePath = file.toPath();
             String objectName = generateFileName(multipartFile);
             Storage storage = storageOptions.getService();
             BlobId blobId = BlobId.of(bucketName, "Taaha/"+objectName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-            Blob blob = storage.create(blobInfo, Files.readAllBytes(filePath));
-            System.out.println("File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+            Blob blob = storage.create(blobInfo, multipartFile.getBytes());
+            System.out.println("File " + multipartFile.getOriginalFilename() + " uploaded to bucket " + bucketName + " as " + objectName);
             return new String[]{"fileUrl", objectName};
         }
 
@@ -94,9 +92,10 @@ public class StorageServiceFirebaseImpl implements StorageService {
 
         private File convertMultiPartToFile(MultipartFile file) throws IOException {
             File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-            FileOutputStream fos = new FileOutputStream(convertedFile);
-            fos.write(file.getBytes());
-            fos.close();
+//
+//            FileOutputStream fos = new FileOutputStream(convertedFile);
+//            fos.write(file.getBytes());
+//            fos.close();
             return convertedFile;
         }
 

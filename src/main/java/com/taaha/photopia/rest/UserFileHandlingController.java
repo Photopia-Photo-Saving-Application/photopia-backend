@@ -26,9 +26,7 @@ public class UserFileHandlingController {
     @PostMapping("/image")
     public ResponseEntity<?> uploadInvestigation(@RequestParam("file") MultipartFile theFile) throws Exception {
         //upload files
-        System.out.println("inside controller");
         String[] myFile = storageService.uploadFile(theFile);
-        System.out.println("inside controller  2");
         return new ResponseEntity<>(myFile, null, HttpStatus.OK);
     }
 

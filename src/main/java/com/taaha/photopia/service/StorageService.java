@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 
 /**
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 public interface StorageService {
 
     String uploadImage(MultipartFile theImage, String theUsername) throws Exception;
+
+    ArrayList<String> fetchUserImage(String theUsername) throws Exception;
 
     ResponseEntity<Object> downloadFile(String fileUrl, HttpServletRequest request) throws Exception;
 }

@@ -23,10 +23,7 @@ import java.nio.channels.Channels;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 import static java.rmi.Naming.list;
 
@@ -74,19 +71,22 @@ public class StorageServiceFirebaseImpl implements StorageService {
         }
 
 
-//    @Override
-//    @Transactional
-//    public String[] uploadFile(MultipartFile multipartFile) throws IOException {
-//        Storage storage = storageOptions.getService();
-//        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.currentDirectory(), Storage.BlobListOption.prefix("Taaha/"));
-//        Iterable<Blob> blobIterator = blobs.iterateAll();
-//        List<String> IMAGEuRL=
-//        blobIterator.forEach(blob -> {
-//            if (!blob.isDirectory()) {
-//                System.out.println(blob.getName());
-//            }
-//        });
-//    }
+    @Override
+    @Transactional
+    public ArrayList<String> fetchUserImage(String theUsername) throws Exception {
+        Storage storage = storageOptions.getService();
+        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.currentDirectory(), Storage.BlobListOption.prefix(theUsername+"/"));
+        Iterable<Blob> blobIterator = blobs.iterateAll();
+        ArrayList<String> imageURL=new ArrayList<String>();
+        blobIterator.forEach(blob -> {
+            if (!blob.isDirectory()) {
+                //System.out.println(blob.getName());
+                imageURL.add("https://storage.googleapis.com/"+bucketName+"/"+blob.getName());
+            }
+        });
+        imageURL.remove(0);
+        return imageURL;
+    }
 
     @Override
         public ResponseEntity<Object> downloadFile(String fileName, HttpServletRequest request) throws Exception {

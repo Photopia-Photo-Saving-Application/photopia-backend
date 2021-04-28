@@ -1,16 +1,17 @@
 package com.taaha.photopia.model;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-public class Response {
+public class Response2 {
     private Date timestamp;
     private int status;
     private String message;
-    private Map<String, String> payload;
+    private Map<String, ArrayList<String>> payload;
 
-    public Response(Date timestamp, int status, String message, Map<String,String> payload) {
+    public Response2(Date timestamp, int status, String message, Map<String,ArrayList<String>> payload) {
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;
@@ -42,11 +43,11 @@ public class Response {
         this.message = message;
     }
 
-    public Map<String, String> getPayload() {
+    public Map<String, ArrayList<String>> getPayload() {
         return payload;
     }
 
-    public void setPayload(Map<String,String> payload) {
+    public void setPayload(Map<String, ArrayList<String>> payload) {
         this.payload = payload;
     }
 }

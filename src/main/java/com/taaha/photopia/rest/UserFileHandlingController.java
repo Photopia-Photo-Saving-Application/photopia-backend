@@ -3,6 +3,7 @@ package com.taaha.photopia.rest;
 
 import com.taaha.photopia.filter.JwtRequestFilter;
 import com.taaha.photopia.model.Response;
+import com.taaha.photopia.model.Response2;
 import com.taaha.photopia.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -27,20 +26,24 @@ public class UserFileHandlingController {
     private JwtRequestFilter jwtRequestFilter;
 
 
-    @PostMapping("/image")
+    @PostMapping("/images")
     public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile theFile) throws Exception {
-        System.out.println("inside post/api/image");
+
         String image=storageService.uploadImage(theFile,jwtRequestFilter.getUsername());
         Map<String,String> payload=new HashMap<>();
         payload.put("image",image);
         return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "api/image: image upload successful",payload),HttpStatus.OK);
     }
 
-//    @GetMapping("/image")
-//    public ResponseEntity<?> fetchUserImage() throws Exception {
-//        //upload files
-//        return new ResponseEntity<>(myFile, null, HttpStatus.OK);
-//    }
+    @GetMapping("/images")
+    public ResponseEntity<Object> fetchUserImage() throws Exception {
+        //upload files
+        System.out.println("inside get/api/images");
+        ArrayList<String> imageList=storageService.fetchUserImage(jwtRequestFilter.getUsername());
+        Map<String, ArrayList<String>> payload=new HashMap<>();
+        payload.put("imageList",imageList);
+        return new ResponseEntity(new Response2(new Date(), HttpStatus.OK.value(), "api/image: image fetch successful",payload),HttpStatus.OK);
+    }
 
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Object> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws Exception {

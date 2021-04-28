@@ -55,22 +55,14 @@ public class StorageServiceFirebaseImpl implements StorageService {
         @Override
         @Transactional
         public String[] uploadFile(MultipartFile multipartFile) throws IOException {
-            System.out.println("bucket name====" + bucketName);
             File file = convertMultiPartToFile(multipartFile);
             Path filePath = file.toPath();
             String objectName = generateFileName(multipartFile);
-            System.out.println("bucket name1====" + bucketName);
             Storage storage = storageOptions.getService();
-            System.out.println("bucket name2====" + bucketName);
-            System.out.println(objectName);
             BlobId blobId = BlobId.of(bucketName, "Taaha/"+objectName);
-            System.out.println("bucket name3====" + bucketName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-            System.out.println("bucket name4====" + bucketName);
             Blob blob = storage.create(blobInfo, Files.readAllBytes(filePath));
-            System.out.println("bucket name5====" + bucketName);
             System.out.println("File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
-            System.out.println("bucket name6====" + bucketName);
             return new String[]{"fileUrl", objectName};
         }
 

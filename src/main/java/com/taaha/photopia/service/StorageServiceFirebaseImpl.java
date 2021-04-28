@@ -90,15 +90,6 @@ public class StorageServiceFirebaseImpl implements StorageService {
         }
 
 
-        private File convertMultiPartToFile(MultipartFile file) throws IOException {
-            File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-//
-//            FileOutputStream fos = new FileOutputStream(convertedFile);
-//            fos.write(file.getBytes());
-//            fos.close();
-            return convertedFile;
-        }
-
         private String generateFileName(MultipartFile multiPart) {
             return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
         }

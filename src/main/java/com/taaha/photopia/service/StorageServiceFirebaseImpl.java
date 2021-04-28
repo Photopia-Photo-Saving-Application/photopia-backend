@@ -62,7 +62,8 @@ public class StorageServiceFirebaseImpl implements StorageService {
             System.out.println("bucket name1====" + bucketName);
             Storage storage = storageOptions.getService();
             System.out.println("bucket name2====" + bucketName);
-            BlobId blobId = BlobId.of(bucketName, objectName);
+            System.out.println(objectName);
+            BlobId blobId = BlobId.of(bucketName, "Taaha/"+objectName);
             System.out.println("bucket name3====" + bucketName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
             System.out.println("bucket name4====" + bucketName);

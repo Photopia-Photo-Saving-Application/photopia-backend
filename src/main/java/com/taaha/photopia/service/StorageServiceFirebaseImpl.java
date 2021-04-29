@@ -60,11 +60,10 @@ public class StorageServiceFirebaseImpl implements StorageService {
             Storage storage = storageOptions.getService();
             BlobId blobId = BlobId.of(bucketName, theUsername+"/"+objectName);
             String imageName=theImage.getOriginalFilename();
-            String imageExtension=(imageName.split("\\.")[1]).toLowerCase();
-            if(!imageExtension.equals("png") && !imageExtension.equals("jpg") && !imageExtension.equals("jpeg")){
+            if(!theImage.getContentType().equals("image/png") && !theImage.getContentType().equals("image/jpg") && !theImage.getContentType().equals("image/jpeg")){
                 throw new Exception("File type is not supported");
             }
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/"+imageExtension).build();
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(theImage.getContentType()).build();
             Blob blob = storage.create(blobInfo, theImage.getBytes());
             return objectName;
             //System.out.println("File " + imageName+ " uploaded to bucket " + bucketName+"/"+theUsername + " as " + objectName);

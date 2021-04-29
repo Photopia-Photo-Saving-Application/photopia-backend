@@ -7,6 +7,7 @@ import com.taaha.photopia.model.Response2;
 import com.taaha.photopia.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,9 +27,8 @@ public class UserFileHandlingController {
     private JwtRequestFilter jwtRequestFilter;
 
 
-    @PostMapping("/images")
+    @PostMapping(value="/images")
     public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile theFile) throws Exception {
-
         String image=storageService.uploadImage(theFile,jwtRequestFilter.getUsername());
         Map<String,String> payload=new HashMap<>();
         payload.put("image",image);
@@ -53,9 +53,9 @@ public class UserFileHandlingController {
         return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "api/image: image deletion successful",payload),HttpStatus.OK);
     }
 
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Object> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws Exception {
-        return storageService.downloadFile(fileName, request);
-    }
+//    @GetMapping("/download/{fileName:.+}")
+//    public ResponseEntity<Object> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws Exception {
+//        return storageService.downloadFile(fileName, request);
+//    }
 
 }

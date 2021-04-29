@@ -80,8 +80,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-			httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//					.addFilterBefore(new CorsFilter(corsConfigurationSource(corsOrigin)), AbstractPreAuthenticatedProcessingFilter.class);
+			httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new CorsFilter(corsConfigurationSource(corsOrigin)), AbstractPreAuthenticatedProcessingFilter.class);
 	}
 
 	private CorsConfigurationSource corsConfigurationSource(String corsOrigin) {

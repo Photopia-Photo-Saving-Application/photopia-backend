@@ -7,12 +7,10 @@ import com.taaha.photopia.model.Response2;
 import com.taaha.photopia.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -34,6 +32,20 @@ public class UserFileHandlingController {
         payload.put("image",image);
         return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "api/image: image upload successful",payload),HttpStatus.OK);
     }
+
+//    @PostMapping(value="/folder")
+//    public ResponseEntity<Object> createFolder() throws Exception {
+//        storageService.createFolder("Sumaiya");
+//        Map<String,String> payload=new HashMap<>();
+//        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "api/image: folder creation successful",payload),HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping(value="/folder")
+//    public ResponseEntity<Object> deleteFolder() throws Exception {
+//        storageService.deleteFolder("Sumaiya");
+//        Map<String,String> payload=new HashMap<>();
+//        return new ResponseEntity(new Response(new Date(), HttpStatus.OK.value(), "api/image: folder deletion successful",payload),HttpStatus.OK);
+//    }
 
     @GetMapping("/images")
     public ResponseEntity<Object> fetchUserImage() throws Exception {

@@ -69,6 +69,29 @@ public class StorageServiceFirebaseImpl implements StorageService {
             //System.out.println("File " + imageName+ " uploaded to bucket " + bucketName+"/"+theUsername + " as " + objectName);
         }
 
+    @Override
+    @Transactional
+    public void createFolder(String theUsername) throws IOException,Exception {
+        Storage storage = storageOptions.getService();
+        BlobId blobId = BlobId.of(bucketName, theUsername+"/");
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+        Blob blob = storage.create(blobInfo);
+        //System.out.println("File " + imageName+ " uploaded to bucket " + bucketName+"/"+theUsername + " as " + objectName);
+    }
+
+    @Override
+    @Transactional
+    public void deleteFolder(String theUsername) {
+        Storage storage = storageOptions.getService();
+        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.currentDirectory(), Storage.BlobListOption.prefix(theUsername+"/"));
+        Iterable<Blob> blobIterator = blobs.iterateAll();
+        blobIterator.forEach(blob -> {
+            if (!blob.isDirectory()) {
+                BlobId b= BlobId.of(bucketName, blob.getName());
+                storage.delete(b);
+            }
+        });
+    }
 
     @Override
     @Transactional

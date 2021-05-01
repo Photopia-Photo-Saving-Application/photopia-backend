@@ -8,6 +8,7 @@ import com.taaha.photopia.model.ForgotPasswordRequest;
 import com.taaha.photopia.model.PasswordChangeRequest;
 import com.taaha.photopia.model.RecoverAccountRequest;
 import com.taaha.photopia.model.SignInRequest;
+import com.taaha.photopia.service.StorageService;
 import com.taaha.photopia.service.UserServiceImpl;
 import com.taaha.photopia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class AuthenticationRestController {
 
     @Value("${frontend.url}")
     private String siteURL;
+
+    @Autowired
+    private StorageService storageService;
 
     private UserServiceImpl userService;
 
@@ -127,6 +131,7 @@ public class AuthenticationRestController {
         try{
 //            userService.registerUser(theUser, getSiteURL(request));
             userService.registerUser(theUser, siteURL);
+            storageService.createFolder(theUser.getName());
         }catch(Exception e){
             throw new Exception("user with same name or email exists",e);
         }
@@ -182,6 +187,7 @@ public class AuthenticationRestController {
     public ResponseEntity<Object> removeUser() throws UsernameNotFoundException{
 
         try{
+            storageService.deleteFolder(jwtRequestFilter.getUsername());
             userService.removeUser(jwtRequestFilter.getUsername());
         }catch(UsernameNotFoundException e){
             throw new UsernameNotFoundException("could not find user for the token", e);

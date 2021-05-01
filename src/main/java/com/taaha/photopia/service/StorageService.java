@@ -19,4 +19,8 @@ public interface StorageService {
     ResponseEntity<Object> downloadFile(String fileUrl, HttpServletRequest request) throws Exception;
 
     void deleteImage(String theImage, String theUsername);
+
+    void createFolder(String theUsername) throws Exception;
+
+    void deleteFolder(String theUsername);
 }

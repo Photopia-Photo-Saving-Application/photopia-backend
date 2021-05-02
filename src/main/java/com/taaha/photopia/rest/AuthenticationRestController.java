@@ -131,7 +131,9 @@ public class AuthenticationRestController {
         try{
 //            userService.registerUser(theUser, getSiteURL(request));
             userService.registerUser(theUser, siteURL);
+            System.out.println("register user done");
             storageService.createFolder(theUser.getName());
+            System.out.println("create folder done");
         }catch(Exception e){
             throw new Exception("user with same name or email exists",e);
         }
